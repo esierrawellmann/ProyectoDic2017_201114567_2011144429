@@ -29,6 +29,15 @@ class Lista(object):
                 if (temp == self.head):
                     break
 
+    def search_user(self,dato):
+        temp = self.head
+        if self.head is not None:
+            while (True):
+                if(temp.data.username == dato):
+                    return temp
+                temp = temp.next
+                if (temp == self.head):
+                    break
     def delete(self,node):
         if node is not None:
             node.prev.next = node.next
