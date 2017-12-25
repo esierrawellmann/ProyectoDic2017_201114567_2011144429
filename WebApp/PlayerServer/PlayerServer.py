@@ -1,7 +1,8 @@
 import os
 from flask import Flask,request,redirect,session,g,render_template,flash,url_for,send_from_directory,json
 from werkzeug.utils import secure_filename
-import Lista,Matriz
+from Matriz import Matriz
+from Lista import Lista
 import xml.etree.ElementTree
 app = Flask(__name__)
 
@@ -12,17 +13,24 @@ ALLOWED_EXTENSIONS = set(['xml'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 variable = "texto"
-users = Lista.Lista()
-songs = Matriz.Matriz()
+users = Lista()
+artists = Lista()
+artist_albums = Lista()
+songs_directory = Matriz()
 
 
 @app.before_request
 def before_request():
     g.users = users
+
 @app.route('/')
 @app.route("/index")
 def index():
     return render_template('login.html')
+
+@app.route("/print_users")
+def print_users():
+    return users.structure_string()
 
 @app.route("/login", methods=['POST'])
 def login():
@@ -57,6 +65,27 @@ def upload_file():
                     usr.username = usuario.find("nombre").text
                     usr.password = usuario.find("pass").text
                     users.add(usr)
+
+            for artistas in e.findall('artistas'):
+                for artista in artistas:
+                    node_artist = Artista()
+                    node_artist.nombre = artista.find("nombre").text
+                    artists.add(node_artist)
+                    for albums in artista.findall('albumes'):
+                        for album in albums:
+                            node_album = Album()
+                            node_album.año = album.find("año").text
+                            node_album.genero = album.find("genero").text
+                            node_album.nombre = album.find("nombre").text
+                            year_data = songs_directory.add_year(node_album.año).data
+                            songs_directory.add_genere(year_data,node_album.genero)
+
+                            artist_albums.add(node_album)
+                    artists.add(artist_albums)
+
+            songs_directory.show()
+
+
             flash("File Uploaded Successfully")
             return redirect(url_for('index'))
 
@@ -84,10 +113,20 @@ def eliminar():
         userList.show()
     return "eliminados"
 
+def printStructure(stringStructure):
+    pass
+
+class Artista(object):
+    nombre = None
+    albums = None
 class Usuario(object):
     username = None
     password = None
 
+class Album(object):
+    nombre = None
+    genero = None
+    año=None
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 if __name__ == '__main__':
