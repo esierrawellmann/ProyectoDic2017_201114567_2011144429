@@ -3,6 +3,7 @@ from flask import Flask,request,redirect,session,g,render_template,flash,url_for
 from werkzeug.utils import secure_filename
 from Matriz import Matriz
 from Lista import Lista
+from BTree import BTree
 import xml.etree.ElementTree
 app = Flask(__name__)
 
@@ -22,15 +23,73 @@ songs_directory = Matriz()
 @app.before_request
 def before_request():
     g.users = users
+    g.songs_directory = songs_directory
 
 @app.route('/')
 @app.route("/index")
 def index():
+
     return render_template('login.html')
 
 @app.route("/print_users")
 def print_users():
     return users.structure_string()
+
+@app.route("/btree")
+def btree():
+    arbol = BTree(3)
+
+    arbol.insert(1)
+    arbol.insert(2)
+    arbol.insert(3)
+    arbol.insert(4)
+    arbol.insert(5)
+    arbol.insert(6)
+    arbol.insert(7)
+    arbol.insert(8)
+    arbol.insert(9)
+    arbol.insert(10)
+    arbol.insert(11)
+    arbol.insert(12)
+
+    arbol.insert(13)
+    arbol.insert(14)
+    arbol.insert(15)
+    arbol.insert(16)
+    arbol.insert(17)
+
+    arbol.insert(18)
+
+    arbol.insert(19)
+
+    arbol.insert(20)
+    arbol.insert(21)
+    arbol.insert(22)
+
+    arbol.insert(23)
+    arbol.insert(24)
+    arbol.insert(25)
+    arbol.insert(26)
+    arbol.insert(28)
+
+
+    arbol.print_order()
+
+    return "printed"
+
+@app.route("/print_matrix")
+def print_matrix():
+    songs_directory = g.songs_directory
+    return songs_directory.show_matrix()
+
+@app.route("/show_artist_tree/<year>/<genere>")
+def show_artist_tree(year,genere):
+    _year = g.songs_directory.years.search_year(year).data
+    if _year is not None:
+        genere = _year.generes.search_genere(genere).data
+        if genere is not None:
+            genere.arbol.show_arbol()
+    return year
 
 @app.route("/login", methods=['POST'])
 def login():
@@ -78,12 +137,12 @@ def upload_file():
                             node_album.genero = album.find("genero").text
                             node_album.nombre = album.find("nombre").text
                             year_data = songs_directory.add_year(node_album.año).data
-                            songs_directory.add_genere(year_data,node_album.genero)
-
+                            genere = songs_directory.add_genere(year_data,node_album.genero).data
+                            if genere.arbol.search(node_artist) is False:
+                                genere.arbol.insert(node_artist)
                             artist_albums.add(node_album)
                     artists.add(artist_albums)
-
-            songs_directory.show()
+            g.songs_directory = songs_directory
 
 
             flash("File Uploaded Successfully")
@@ -131,4 +190,3 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 if __name__ == '__main__':
     app.run(debug=True)
-
