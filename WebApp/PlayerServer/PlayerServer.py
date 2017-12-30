@@ -189,4 +189,4 @@ class Album(object):
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 if __name__ == '__main__':
-    app.run(debug=True,port=8080)
+    app.run(debug=True,port=8081)
