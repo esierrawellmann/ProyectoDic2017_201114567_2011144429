@@ -84,12 +84,12 @@ def print_matrix():
 
 @app.route("/show_artist_tree/<year>/<genere>")
 def show_artist_tree(year,genere):
-    _year = g.songs_directory.years.search_year(year).data
+    _year = g.songs_directory.years.search_year(year)
     if _year is not None:
-        genere = _year.generes.search_genere(genere).data
+        genere = _year.data.generes.search_genere(genere)
         if genere is not None:
-            genere.arbol.show_arbol()
-    return year
+            return genere.data.arbol.show_arbol()
+    return "digraph G {{ node[shape=record];\n  }}"
 
 @app.route("/login", methods=['POST'])
 def login():
@@ -138,8 +138,15 @@ def upload_file():
                             node_album.nombre = album.find("nombre").text
                             year_data = songs_directory.add_year(node_album.año).data
                             genere = songs_directory.add_genere(year_data,node_album.genero).data
-                            if genere.arbol.search(node_artist) is False:
+                            node_artist.b_year = year_data.year
+                            node_artist.b_genere = genere.genere
+                            artist_b_genere = genere.arbol.search(node_artist)
+                            if artist_b_genere is None:
                                 genere.arbol.insert(node_artist)
+                                for albums in artista.findall('albumes'):
+                                    for album in albums:
+                                        pass
+
                             artist_albums.add(node_album)
                     artists.add(artist_albums)
             g.songs_directory = songs_directory
@@ -178,6 +185,8 @@ def printStructure(stringStructure):
 class Artista(object):
     nombre = None
     albums = None
+    b_year = None
+    b_genere = None
 class Usuario(object):
     username = None
     password = None
@@ -189,4 +198,4 @@ class Album(object):
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True,port=8081)

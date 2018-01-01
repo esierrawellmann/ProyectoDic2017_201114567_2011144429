@@ -7,7 +7,7 @@ class Year(object):
 
 class Genere(object):
     genere = None
-    arbol = BTree(3)
+    arbol = None
 
 
 
@@ -47,10 +47,12 @@ class Matriz(object):
 
     def add_genere(self,year, data):
         genere_to_add = Genere()
+        genere_to_add.arbol = BTree(3)
         genere_to_add.genere = data
         col_genere = year.generes.search_genere(genere_to_add.genere)
         if col_genere is None:
-            return year.generes.add(genere_to_add)
+            genere = year.generes.add(genere_to_add)
+            return genere
         else:
             return col_genere
 

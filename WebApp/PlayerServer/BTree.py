@@ -35,7 +35,7 @@ class BTree(object):
         new_node.leaf = False
 
       parent.children = parent.add_child(new_node)
-      if payload < split_value:
+      if payload.nombre.lower().strip() < split_value.nombre.lower().strip():
         return self
       else:
         return new_node
@@ -51,7 +51,7 @@ class BTree(object):
     def add_key(self, value):
       """Add a key to a node. The node will have room for the key by definition."""
       self.keys.append(value)
-      self.keys.sort(key=lambda x: x.nombre, reverse=True)
+      self.keys.sort(key=lambda x: x.nombre.lower().strip(), reverse=False)
 
     def add_child(self, new_node):
       """
@@ -60,7 +60,7 @@ class BTree(object):
       returns: an order list of child nodes
       """
       i = len(self.children) - 1
-      while i >= 0 and self.children[i].keys[0] > new_node.keys[0]:
+      while i >= 0 and self.children[i].keys[0].nombre.lower().strip() > new_node.keys[0].nombre.lower().strip():
         i -= 1
       return self.children[:i + 1]+ [new_node] + self.children[i + 1:]
 
@@ -89,9 +89,9 @@ class BTree(object):
       self.root = new_root
     while not node.leaf:
       i = node.size - 1
-      while i > 0 and payload < node.keys[i] :
+      while i > 0 and payload.nombre.lower().strip() < node.keys[i].nombre.lower().strip() :
         i -= 1
-      if payload > node.keys[i]:
+      if payload.nombre.lower().strip() > node.keys[i].nombre.lower().strip():
         i += 1
 
       next = node.children[i]
@@ -107,13 +107,13 @@ class BTree(object):
     if node is None:
       node = self.root
     if value in node.keys:
-      return True
+      return value
     elif node.leaf:
       # If we are in a leaf, there is no more to check.
-      return False
+      return None
     else:
       i = 0
-      while i < node.size and value > node.keys[i]:
+      while i < node.size and value.nombre.lower().strip() > node.keys[i].nombre.lower().strip():
         i += 1
       return self.search(value, node.children[i])
 
@@ -133,15 +133,19 @@ class BTree(object):
   def show_arbol(self):
       this_level = [self.root]
       level = 0
-      while this_level:
+      output = ""
 
+      while this_level:
           next_level = []
-          output = ""
-          keys = ""
-          for node in this_level:
-              btree_str = "node{0}[label=\"<{1}>\"];\n".format(level, '>|<'.join([artista.nombre for artista in node.keys]) )
+          for index,node in enumerate(this_level):
+              output += "level{0}node{1}[label=\"{2}|<node{3}pos{4}>\"];\n".format(level, index,'|'.join(['<node'+str(index)+'pos'+str(i)+'>|'+v.nombre for i, v in enumerate(node.keys)]),index,node.keys.__len__())
               if node.children:
-                  next_level.extend(node.children)
-          print(btree_str)
+                    next_level.extend(node.children)
+                    output += "subgraph tranlevel{0}node{1}{{ \n\n".format(level, index)
+                    for i,n in enumerate(node.children):
+                        output +="level{0}node{1}:node{1}pos{2} ->  level{3}node{4}; \n".format(level,index,i,level +1,i)
+                    output += "}"
+
           level = level + 1;
           this_level = next_level
+      return "digraph G {{ node[shape=record];\n {0} }}".format(output)
