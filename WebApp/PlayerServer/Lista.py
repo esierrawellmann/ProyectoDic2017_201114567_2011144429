@@ -11,7 +11,7 @@ class Lista(object):
         if self.head is None:
             self.head = self.tail = new_node
             new_node.prev = self.head
-            new_node.next = self.tail
+            new_node.next = self.head
             new_node.index = 0
         else:
             new_node.data = data
@@ -47,6 +47,16 @@ class Lista(object):
         if self.head is not None:
             while (True):
                 if (temp.data.year == dato):
+                    return temp
+                temp = temp.next
+                if (temp == self.head):
+                    return None
+
+    def get_at(self, dato):
+        temp = self.head
+        if self.head is not None:
+            while (True):
+                if (temp.index == dato):
                     return temp
                 temp = temp.next
                 if (temp == self.head):
@@ -88,21 +98,21 @@ class Lista(object):
                 if (temp == self.head):
                     break
 
-    def sort_by_generes(self):
-        temp = self.head
-        if self.head is not None and self.head.next is not self.head:
+    def sort_by_generes(self,data):
+        temp = data.head
+        if temp is not None:
             while (True):
-                temp2 = self.head
+                temp2 = data.head
                 while (True):
-                    if temp2.next is not self.head and temp2.data.genero.replace(" ","") > temp2.next.data.genero.replace(" ",""):
+                    if temp2.next is not data.head and temp2.data.genere.replace(" ","") > temp2.next.data.genere.replace(" ",""):
                         bubble_data = temp2.next.data
                         temp2.next.data = temp2.data
                         temp2.data = bubble_data
                     temp2 = temp2.next
-                    if (temp2 == self.head):
+                    if (temp2 == data.head):
                         break
                 temp = temp.next
-                if (temp == self.head):
+                if (temp == data.head):
                     break
 
     def show(self):
