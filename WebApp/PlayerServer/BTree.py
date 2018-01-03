@@ -8,6 +8,7 @@ class BTree(object):
 
   class Node(object):
     """A simple B-Tree Node."""
+    abb = None
 
     def __init__(self, t):
       self.keys = []
@@ -51,8 +52,9 @@ class BTree(object):
     def add_key(self, value):
       """Add a key to a node. The node will have room for the key by definition."""
       self.keys.append(value)
+      new_value = self.keys[-1]
       self.keys.sort(key=lambda x: x.nombre.lower().strip(), reverse=False)
-
+      return new_value
     def add_child(self, new_node):
       """
       Add a child to a node. This will sort the node's children, allowing for children
@@ -100,14 +102,16 @@ class BTree(object):
       else:
         node = next
     # Since we split all full nodes on the way down, we can simply insert the payload in the leaf.
-    node.add_key(payload)
+    return node.add_key(payload)
 
   def search(self, value, node=None):
     """Return True if the B-Tree contains a key that matches the value."""
+
     if node is None:
       node = self.root
-    if value in node.keys:
-      return value
+    key = [x for x in node.keys if x.nombre == value.nombre]
+    if key:
+      return key[0]
     elif node.leaf:
       # If we are in a leaf, there is no more to check.
       return None

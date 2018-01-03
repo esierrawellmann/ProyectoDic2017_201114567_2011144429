@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from Matriz import Matriz
 from Lista import Lista
 from BTree import BTree
+from ABB import ABB
 import xml.etree.ElementTree
 app = Flask(__name__)
 
@@ -35,48 +36,6 @@ def index():
 def print_users():
     return users.structure_string()
 
-@app.route("/btree")
-def btree():
-    arbol = BTree(3)
-
-    arbol.insert(1)
-    arbol.insert(2)
-    arbol.insert(3)
-    arbol.insert(4)
-    arbol.insert(5)
-    arbol.insert(6)
-    arbol.insert(7)
-    arbol.insert(8)
-    arbol.insert(9)
-    arbol.insert(10)
-    arbol.insert(11)
-    arbol.insert(12)
-
-    arbol.insert(13)
-    arbol.insert(14)
-    arbol.insert(15)
-    arbol.insert(16)
-    arbol.insert(17)
-
-    arbol.insert(18)
-
-    arbol.insert(19)
-
-    arbol.insert(20)
-    arbol.insert(21)
-    arbol.insert(22)
-
-    arbol.insert(23)
-    arbol.insert(24)
-    arbol.insert(25)
-    arbol.insert(26)
-    arbol.insert(28)
-
-
-    arbol.print_order()
-
-    return "printed"
-
 @app.route("/print_matrix")
 def print_matrix():
     songs_directory = g.songs_directory
@@ -89,6 +48,22 @@ def show_artist_tree(year,genere):
         genere = _year.data.generes.search_genere(genere)
         if genere is not None:
             return genere.data.arbol.show_arbol()
+    return "digraph G {{ node[shape=record];\n  }}"
+
+@app.route("/show_artist_bbtree/<y_year>/<r_genere>/<r_artist>")
+def show_artist_bbtree(y_year,r_genere,r_artist):
+    _year = g.songs_directory.years.search_year(y_year)
+    if _year is not None:
+        genere = _year.data.generes.search_genere(r_genere)
+        if genere is not None:
+            node_artist = Artista()
+            node_artist.nombre = r_artist
+            node_artist.b_year = _year.data.year
+            node_artist.b_genere = genere.data.genere
+            abb = genere.data.arbol.search(node_artist)
+
+            if abb is not None:
+                return "digraph G {{ node[shape=circle];\n {0} }}".format(abb.albums.print_abb(abb.albums))
     return "digraph G {{ node[shape=record];\n  }}"
 
 @app.route("/login", methods=['POST'])
@@ -127,25 +102,30 @@ def upload_file():
 
             for artistas in e.findall('artistas'):
                 for artista in artistas:
-                    node_artist = Artista()
-                    node_artist.nombre = artista.find("nombre").text
-                    artists.add(node_artist)
+
                     for albums in artista.findall('albumes'):
                         for album in albums:
                             node_album = Album()
-                            node_album.año = album.find("año").text
+                            node_album.año = album.find("annioo").text
                             node_album.genero = album.find("genero").text
                             node_album.nombre = album.find("nombre").text
                             year_data = songs_directory.add_year(node_album.año).data
                             genere = songs_directory.add_genere(year_data,node_album.genero).data
+                            node_artist = Artista()
+                            node_artist.nombre = artista.find("nombre").text
                             node_artist.b_year = year_data.year
                             node_artist.b_genere = genere.genere
                             artist_b_genere = genere.arbol.search(node_artist)
                             if artist_b_genere is None:
-                                genere.arbol.insert(node_artist)
-                                for albums in artista.findall('albumes'):
-                                    for album in albums:
-                                        pass
+                                node_artist.albums = None
+                                artist_b_genere = genere.arbol.insert(node_artist)
+                            if artist_b_genere.albums is None:
+                                artist_b_genere.albums = ABB()
+                            artist_b_genere.albums.raiz = artist_b_genere.albums.insert(artist_b_genere.albums.raiz,node_album)
+
+                            for canciones in album.findall('canciones'):
+                                for cancion in canciones:
+                                    pass
 
                             artist_albums.add(node_album)
                     artists.add(artist_albums)
