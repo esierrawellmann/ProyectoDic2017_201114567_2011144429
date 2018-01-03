@@ -11,69 +11,28 @@ package com.edd.player;
  */
 public class Cancion {
     
-    private String nombre;
-    private String artista;
-    private String album;
-    private String genero;
-    private String year;
-    private String path;
+    private String nombre_cancion;
+    private String ruta;
     
-    public Cancion(/*String Nombre, String Artista, String Album, String Genero, String Year, String Path*/){
+    public Cancion()
+    {
         
-        /*nombre=Nombre;
-        artista=Artista;
-        album=Album;
-        genero=Genero;
-        year=Year;
-        path=Path;*/
     }
     
-    public String getNombre(){
-        return nombre;
+    public String getNombre_Cancion(){
+        return nombre_cancion;
     }
     
-    public void setNombre(String nombre){
-        this.nombre=nombre;
-    }
-    
-    public String getArtista(){
-        return artista;
-    }
-    
-    public void setArtista(String artista){
-        this.artista=artista;
-    }
-    
-    public String getAlbum(){
-        return album;
-    }
-    
-    public void setAlbum(String album){
-        this.album=album;
-    }
-    
-    public String getGenero(){
-        return genero;
-    }
-    
-    public void setGenero(String genero){
-        this.genero=genero;
-    }
-    
-    public String getYear(){
-        return year;
-    }
-    
-    public void setYear(String year){
-        this.year=year;
+    public void setNombre_Cancion(String nombre){
+        this.nombre_cancion=nombre;
     }
     
     public String getPath(){
-        return path;
+        return ruta;
     }
     
     public void setPath(String path){
-        this.path=path;
+        this.ruta=path;
     }
     
 }
