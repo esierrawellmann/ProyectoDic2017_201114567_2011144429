@@ -10,7 +10,8 @@ package com.edd.player;
  * @author Renan
  */
 public class Cancion {
-    
+
+    private Integer index;
     private String nombre_cancion;
     private String ruta;
     
@@ -19,19 +20,27 @@ public class Cancion {
         
     }
     
-    public String getNombre_Cancion(){
+    public Integer getindex(){
+        return index;
+    }
+    
+    public void setindex(Integer index){
+        this.index=index;
+    }
+    
+    public String getnombre(){
         return nombre_cancion;
     }
     
-    public void setNombre_Cancion(String nombre){
+    public void setnombre(String nombre){
         this.nombre_cancion=nombre;
     }
     
-    public String getPath(){
+    public String getpath(){
         return ruta;
     }
     
-    public void setPath(String path){
+    public void setpath(String path){
         this.ruta=path;
     }
     

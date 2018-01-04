@@ -7,10 +7,13 @@ import java.io.IOException;
 
 public class Graphviz {
 
+    String path = "C:\\Users\\Renan\\Desktop\\grafo.txt";
+    String path_grafo = "C:\\Users\\Renan\\Desktop\\grafo1.jpg";
+
     public void CrearArchivo(String Grafo)throws IOException
     {
         String str_grafo = Grafo;
-        String ruta = /*aqui va la ruta para el archivo*/"";
+        String ruta = /*aqui va la ruta para el archivo*/path;
         File archivo = new File(ruta);
         BufferedWriter bw;
 
@@ -25,8 +28,8 @@ public class Graphviz {
 
             String dotPath = "dot.exe";
 
-            String fileInputPath = /*aqui se coloca el path del archivo que creamos*/"c:\\grafo1.txt";
-            String fileOutputPath = /*aqui se coloca el nombre del grafo*/"c:\\grafo1.jpg";
+            String fileInputPath = /*aqui se coloca el path del archivo que creamos*/path;
+            String fileOutputPath = /*aqui se coloca el nombre del grafo*/path_grafo;
 
             String tParam = "-Tjpg";
             String tOParam = "-o";

@@ -11,30 +11,30 @@ import java.util.ArrayList;
  *
  * @author Renan
  */
-public class Album {
+public class Genero {
     
-    private String nombre_album;
-    private ArrayList<Cancion> canciones;
+    private String genero;
+    private ArrayList<Artista> artistas;
     
-    public Album()
+    public Genero()
     {
         
     }
     
     public String getnombre(){
-        return nombre_album;
+        return genero;
     }
     
-    public void setnombre(String nombre){
-        this.nombre_album=nombre;
+    public void setnombre(String genero){
+        this.genero=genero;
     }
     
-    public ArrayList<Cancion> getcanciones(){
-        return canciones;
+    public ArrayList<Artista> getartistas(){
+        return artistas;
     }
     
-    public void setcanciones(ArrayList<Cancion> lista){
-        this.canciones=lista;
+    public void setartistas(ArrayList<Artista> lista){
+        this.artistas=lista;
     }
     
 }

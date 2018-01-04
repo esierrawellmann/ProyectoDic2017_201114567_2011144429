@@ -21,19 +21,19 @@ public class Artista {
         
     }
     
-    public String getNombre_Artista(){
+    public String getnombre(){
         return nombre;
     }
     
-    public void setNombre_Artista(String nombre){
+    public void setnombre(String nombre){
         this.nombre=nombre;
     }
     
-    public ArrayList<Album> getLista_Albumes(){
+    public ArrayList<Album> getdiscos(){
         return albums;
     }
     
-    public void setLista_Albumes(ArrayList<Album> album){
+    public void setdiscos(ArrayList<Album> album){
         this.albums=album;
     }
     

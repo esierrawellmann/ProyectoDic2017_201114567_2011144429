@@ -13,18 +13,19 @@ import java.util.ArrayList;
  */
 public class Datos {
     
-    private ArrayList<Artista> artistas;
+    private ArrayList<Year> years;
     
     public Datos()
     {
         
     }
     
-    public ArrayList<Artista> getLista_Artistas(){
-        return artistas;
+    public ArrayList<Year> getyears(){
+        return years;
     }
     
-    public void setLista_Artistas(ArrayList<Artista> artista){
-        this.artistas=artista;
+    public void setyears(ArrayList<Year> years){
+        this.years=years;
     }
+    
 }
