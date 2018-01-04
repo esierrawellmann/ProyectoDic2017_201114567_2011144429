@@ -95,7 +95,6 @@ class Matriz(object):
                     break
 
         output = "digraph dibujo{ node[shape=record];" + nodes +" "+ edges + generes_edges +" }"
-        print(output)
         return output
 
 

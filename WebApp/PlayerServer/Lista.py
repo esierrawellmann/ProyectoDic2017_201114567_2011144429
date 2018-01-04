@@ -72,11 +72,30 @@ class Lista(object):
                 if (temp == self.head):
                     return None
 
+    def search_song(self, dato):
+        temp = self.head
+        if self.head is not None:
+            while (True):
+                if (temp.data.nombre == dato):
+                    return temp
+                temp = temp.next
+                if (temp == self.head):
+                    return None
+
     def delete(self,node):
         if node is not None:
-            node.prev.next = node.next
-            node.next.prev = node.prev
-            node = None
+            if node == self.head:
+                if self.head.next is not self.head:
+                    self.head = node.next
+                    node.prev.next = node.next
+                    node.next.prev = node.prev
+                    node = None
+                else:
+                    self.head = None
+            else:
+                node.prev.next = node.next
+                node.next.prev = node.prev
+                node = None
 
     def add_years(self,data):
         self.add(data)
@@ -140,8 +159,109 @@ class Lista(object):
             nodes += " } "
 
         output = "digraph dibujo{node[shape=box width=1];rank=LR; "+nodes+" }"
+        return output
+    def structure_queue_string(self):
+        nodes = ""
+
+        temp = self.head
+        if self.head is not None:
+            nodes += "subgraph col"+str(temp.index)+"{ \n rank=UD; \n"
+            while (True):
+                nodes += "user{0}[label={1}] \n".format(temp.index, temp.data.nombre)
+                nodes += "user{0}->user{1} \n".format(temp.index,temp.next.index)
+                nodes += "user{1}->user{0} \n".format(temp.prev.index, temp.index)
+                temp = temp.next
+                if (temp == self.head):
+                    break
+            nodes += " } "
+
+        output = "digraph dibujo{node[shape=box width=1];rank=LR; "+nodes+" }"
+        return output
+
+    def structure_songs_json(self,asObject = True):
+        nodes = ""
+        temp = self.head
+        if self.head is not None:
+            nodes += "{0}\"canciones\":[".format("{" if asObject else "")
+            while (True):
+                nodes += "{{\"index\":{0},\"nombre_cancion\":\"{1}\",\"ruta\":\"{2}\"  }}".format(str(temp.index), temp.data.nombre,temp.data.path)
+                temp = temp.next
+                if (temp == self.head):
+                    break
+                else:
+                    nodes+= ","
+            nodes += "]{0}".format("}" if asObject else "")
+        return nodes
+
+    def structure_generes_json(self,asObject = True):
+        nodes = ""
+        temp = self.head
+        if self.head is not None:
+            nodes += "{0}\"generos\":[".format("{" if asObject else "")
+            while (True):
+                if hasattr(temp.data,'arbol'):
+                    nodes += "{{\"index\":{0},\"genero\":\"{1}\",{2} }}".format(str(temp.index), temp.data.genere, temp.data.arbol.print_arbol_json(False))
+                else:
+                    nodes += "{{\"index\":{0},\"genero\":\"{1}\",\"artistas\":{2} }}".format(str(temp.index),temp.data.genere,"[]")
+                temp = temp.next
+                if (temp == self.head):
+                    break
+                else:
+                    nodes+= ","
+            nodes += "]{0}".format("}" if asObject else "")
+        return nodes
+
+    def structure_years_json(self,asObject = True):
+        nodes = ""
+        temp = self.head
+        if self.head is not None:
+            nodes += "{0}\"years\":[".format("{" if asObject else "")
+            while (True):
+                nodes += "{{\"index\":{0},\"year\":\"{1}\",{2} }}".format(str(temp.index), temp.data.year, temp.data.generes.structure_generes_json(False))
+                temp = temp.next
+                if (temp == self.head):
+                    break
+                else:
+                    nodes+= ","
+            nodes += "]{0}".format("}" if asObject else "")
+        else:
+            nodes = "{\"years\":[]}"
+        return nodes
+
+
+    def structure_songs_string(self):
+        nodes = ""
+
+        temp = self.head
+        if self.head is not None:
+            nodes += "subgraph col"+str(temp.index)+"{ \n rank=UD; \n"
+            while (True):
+                nodes += "user{0}[label=\"{1}\"] \n".format(temp.index, temp.data.nombre)
+                nodes += "user{0}->user{1} \n".format(temp.index,temp.next.index)
+                nodes += "user{1}->user{0} \n".format(temp.prev.index, temp.index)
+                temp = temp.next
+                if (temp == self.head):
+                    break
+            nodes += " } "
+
+        output = "digraph dibujo{node[shape=box width=1];rank=LR; "+nodes+" }"
         print(output)
         return output
+
+    def dequeue(self):
+        if self.head is not None:
+            if self.head.next is not self.head:
+                node = self.head
+                self.head = node.next
+                node.prev.next = node.next
+                node.next.prev = node.prev
+                return node
+            else:
+                node = self.head
+                self.head = None
+                return node
+        else:
+            return None
 
     def __init__(self):
         pass
