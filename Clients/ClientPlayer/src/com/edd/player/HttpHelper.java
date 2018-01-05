@@ -1,5 +1,10 @@
 package com.edd.player;
 
+import com.edd.player.DTO.DTOLogin;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -8,9 +13,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpHelper {
-    static final String serverURl = "http://localhost:5000/";
+    static final String serverURl = "http://localhost:8081/";
     private static final String USER_AGENT = "Mozilla/5.0";
-    public  static void logIn(String user,String password) throws Exception{
+    public  static DTOLogin logIn(String user, String password) throws Exception{
 
         URL obj = new URL(serverURl+"login");
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -44,7 +49,12 @@ public class HttpHelper {
         in.close();
 
         //print result
-        System.out.println(response.toString());
+        ObjectMapper objectMapper = new ObjectMapper();
+        //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+        String rsp = response.toString();
+        DTOLogin loginResponse = objectMapper.readValue(rsp, DTOLogin.class);
+        return loginResponse ;
+
 
     }
 }

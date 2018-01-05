@@ -1,26 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.edd.player.App">
-  <grid id="27dc6" binding="jpContent" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="jpContent" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="1334" height="1184"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <component id="df896" class="javax.swing.JButton" binding="testButton">
+      <grid id="bc9f3" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="0" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties>
-          <text value="Button"/>
-        </properties>
-      </component>
-      <vspacer id="567fa">
-        <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </vspacer>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="4cd" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="ac4a9">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="4" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="51b37" class="javax.swing.JList" binding="list1" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <model/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <grid id="e5977" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="ceb03">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="4" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="8b9ec" class="javax.swing.JList" binding="list5" default-binding="true">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <grid id="3803f" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="f97a1">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="4" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="3fd22" class="javax.swing.JList" binding="list4" default-binding="true">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <grid id="958bb" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="c3831">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="4" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="458a3" class="javax.swing.JList" binding="list3" default-binding="true">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <grid id="e582d" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="bcfd6">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="4" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="e3219" class="javax.swing.JList" binding="list2" default-binding="true">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+        </children>
+      </grid>
     </children>
   </grid>
 </form>
