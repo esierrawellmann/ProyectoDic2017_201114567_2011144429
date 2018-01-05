@@ -14,6 +14,9 @@ public class DTOLogin {
     public boolean success;
     public Data data;
     public static class Data{
+
+        public List<Year> years = new ArrayList<Year>();
+
         public Data() {
         }
 
@@ -25,13 +28,14 @@ public class DTOLogin {
             this.years = years;
         }
 
-        @JsonProperty("years")
-        public List<Year> years = new ArrayList<Year>();
-
         public static class Year{
 
             public Long index;
             public String year;
+            public List<Genere> generos = new ArrayList<Genere>();
+
+            public Year() {
+            }
 
             @Override
             public String toString() {
@@ -54,7 +58,6 @@ public class DTOLogin {
                 this.year = year;
             }
 
-
             public List<Genere> getGeneros() {
                 return generos;
             }
@@ -63,31 +66,26 @@ public class DTOLogin {
                 this.generos = generos;
             }
 
-            public List<Genere> generos = new ArrayList<Genere>();
-
-            public Year() {
-            }
-
             public static class Genere{
 
                 public Long index;
+                public List<Artist> artistas = new ArrayList<Artist>();
+                public String genero;
+
+                public Genere() {
+                }
 
                 @Override
                 public String toString() {
                     return genero;
                 }
+
                 public List<Artist> getArtistas() {
                     return artistas;
                 }
 
                 public void setArtistas(List<Artist> artistas) {
                     this.artistas = artistas;
-                }
-
-                public List<Artist> artistas = new ArrayList<Artist>();
-                public String genero;
-
-                public Genere() {
                 }
 
                 public Long getIndex() {
@@ -110,26 +108,25 @@ public class DTOLogin {
 
                 public static class Artist{
                     public String artista;
+                    public List<Album> albums = new ArrayList<Album>();
+                    public Artist(String artista) {
+                        this.artista = artista;
+                    }
+
+                    public Artist() {
+                    }
 
                     @Override
                     public String toString() {
                         return artista;
                     }
+
                     public List<Album> getAlbums() {
                         return albums;
                     }
 
                     public void setAlbums(List<Album> albums) {
                         this.albums = albums;
-                    }
-
-                    public List<Album> albums = new ArrayList<Album>();
-
-                    public Artist(String artista) {
-                        this.artista = artista;
-                    }
-
-                    public Artist() {
                     }
 
                     public String getArtista() {
@@ -143,8 +140,12 @@ public class DTOLogin {
 
 
                     public static class Album{
+                        public String nombre;
+                        public List<Cancion> canciones  = new ArrayList<Cancion>();
+
                         public Album() {
                         }
+
                         @Override
                         public String toString() {
                             return nombre;
@@ -166,20 +167,18 @@ public class DTOLogin {
                             this.canciones = canciones;
                         }
 
-                        public String nombre;
-                        public List<Cancion> canciones  = new ArrayList<Cancion>();
                         public static class Cancion{
 
                             public Long index;
                             public String nombre_cancion;
                             public String ruta;
 
+                            public Cancion() {
+                            }
+
                             @Override
                             public String toString() {
                                 return nombre_cancion;
-                            }
-
-                            public Cancion() {
                             }
 
                             public Long getIndex() {
