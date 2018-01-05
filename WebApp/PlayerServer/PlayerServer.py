@@ -169,7 +169,7 @@ def get_artists_by_year_and_genere(y_year,r_genere):
 
 @app.route("/library")
 def libray():
-    _year = g.songs_directory.years.structure_years_json(False)
+    _year = g.songs_directory.years.structure_years_json()
     r = make_response(_year);
     r.mimetype = 'application/json';
     return r
@@ -231,8 +231,10 @@ def show_artist_disks(y_year,r_genere,r_artist,r_disk_name):
 def login():
     json_response = request.get_json();
     attempt_user = users.search_user(json_response['user'])
+    _year = g.songs_directory.years.structure_years_json()
+
     if attempt_user.data.password ==json_response['password']:
-        return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+        return "{{\"success\":true,\"data\":{0}}}".format(_year), 200, {'ContentType':'application/json'}
     return json.dumps({'success':False}), 200, {'ContentType':'application/json'}
 
 
