@@ -48,7 +48,11 @@ class ABB(object):
                 self.str_t += "{1}[label=\"null\"]; node{0} -> {1};\n".format(dto, "nulli{0}".format(dto))
             self.str_t += "node{0}[label=\"{1}\"];\n".format(dto, raiz.dato.nombre.replace(" ", "\\n"))
             self.show_abb(raiz.right)
-            self.str_t += "{1}[label=\"null\"]; node{0} -> {1};\n".format(dto, "nulld{0}".format(dto))
+            if (raiz.right is not None):
+                dto_r = raiz.right.dato.nombre.lower().strip().replace(" ", "")
+                self.str_t += "node{0} -> node{1};\n".format(dto, dto_r)
+            else:
+                self.str_t += "{1}[label=\"null\"]; node{0} -> {1};\n".format(dto, "nulld{0}".format(dto))
 
     def print_abb(self,raiz):
         self.str_t =""
