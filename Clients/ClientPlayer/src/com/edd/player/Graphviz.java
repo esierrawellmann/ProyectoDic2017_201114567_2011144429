@@ -4,32 +4,34 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 
 public class Graphviz {
 
-    String path = "C:\\Users\\Renan\\Desktop\\grafo.txt";
-    String path_grafo = "C:\\Users\\Renan\\Desktop\\grafo1.jpg";
+    String path = "/home/erik/cancionesEDD/";
+    String path_grafo = "/home/erik/cancionesEDD/";
 
-    public void CrearArchivo(String Grafo)throws IOException
-    {
-        String str_grafo = Grafo;
-        String ruta = /*aqui va la ruta para el archivo*/path;
-        File archivo = new File(ruta);
-        BufferedWriter bw;
 
-        bw = new BufferedWriter(new FileWriter(archivo));
-        bw.write(str_grafo);
-        bw.close();
-    }
-
-    public void CrearGrafo(/*se le pueden colocar como parametros el nombre del archivo*/)
+    public void CrearGrafo(String Grafo)
     {
         try {
 
-            String dotPath = "dot.exe";
+            Random randomGenerator = new Random();
 
-            String fileInputPath = /*aqui se coloca el path del archivo que creamos*/path;
-            String fileOutputPath = /*aqui se coloca el nombre del grafo*/path_grafo;
+            String str_grafo = Grafo;
+            String graph_name ="graph"+randomGenerator.nextInt(999999999)+".dot";
+            String ruta = path+graph_name;
+            File archivo = new File(ruta);
+            BufferedWriter bw;
+
+            bw = new BufferedWriter(new FileWriter(archivo));
+            bw.write(str_grafo);
+            bw.close();
+
+            String dotPath = "dot";
+
+            String fileInputPath = ruta;
+            String fileOutputPath = path_grafo +".jpg";
 
             String tParam = "-Tjpg";
             String tOParam = "-o";
@@ -44,6 +46,11 @@ public class Graphviz {
             Runtime rt = Runtime.getRuntime();
 
             rt.exec( cmd );
+
+            String[] cmd2 = new String[2];
+            cmd2[0] = "eog";
+            cmd2[1] = fileOutputPath;
+            rt.exec(cmd2);
 
         } catch (Exception ex) {
             ex.printStackTrace();

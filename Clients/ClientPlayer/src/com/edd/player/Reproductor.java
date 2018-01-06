@@ -5,544 +5,154 @@
 package com.edd.player;
 
 import java.awt.event.*;
-import com.edd.player.App;
+import javax.swing.event.*;
 import com.edd.player.DTO.DTOLogin;
 import com.edd.player.LoginDialog;
-import com.mpatric.mp3agic.ID3v2;
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.UnsupportedTagException;
-import javazoom.jlgui.basicplayer.*;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.CannotWriteException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.TagException;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Random;
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * @author Walter Garcia
  */
 public class Reproductor extends JFrame {
-
-    boolean estado;
-    private boolean mute=false;
-    private boolean bloquear=false;
-    private boolean repitaCancion=false;
-    private boolean siguiente=false;
-    boolean SufflePlay;
-
-    private float volumen=0.8f;
-    private final BasicPlayer Audio = new BasicPlayer();
-    FileNameExtensionFilter filtrado = new FileNameExtensionFilter("Solo Mp3","mp3");
-    private String ruta = "C:\\";
-    private  AudioFile audiofile = new AudioFile();
-
-    private File archivo= null;
-
-    private String agregaCanciones[]= new String[10];
-    private String agregaArtistas[] = new String[10];
-    private String agregaAlbums[] = new String[10];
-    private String agregaPlaylist[] = new String[10];
-    private String agregaCancionesCola[] = new String[10];
-
-    DTOLogin  dto;
-
-
-    private final ArrayList<com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album.Cancion> ListaReproduccion = new ArrayList<>();
-
-
-
     public Reproductor() {
         initComponents();
 
-        ImageIcon imagen = new ImageIcon("src\\com\\edd\\player\\Imagenes\\play.png");
-        Icon play = new ImageIcon(imagen.getImage().getScaledInstance(btnPrevious.getWidth(),btnPrevious.getHeight(), Image.SCALE_DEFAULT));
-        btnPlay_Pause.setIcon(play);
-        ImageIcon imagen2 = new ImageIcon("src\\com\\edd\\player\\Imagenes\\next.png");
-        Icon next = new ImageIcon(imagen2.getImage().getScaledInstance(btnPrevious.getWidth(),btnPrevious.getHeight(), Image.SCALE_DEFAULT));
-        btnNext.setIcon(next);
-
-        ImageIcon imagen3 = new ImageIcon("src\\com\\edd\\player\\Imagenes\\previous.png");
-        Icon previous = new ImageIcon(imagen3.getImage().getScaledInstance(btnPrevious.getWidth(),btnPrevious.getHeight(), Image.SCALE_DEFAULT));
-        btnPrevious.setIcon(previous);
-
-        ImageIcon imagen4 = new ImageIcon("src\\com\\edd\\player\\Imagenes\\volume.png");
-        Icon Mute = new ImageIcon(imagen4.getImage().getScaledInstance(btnPrevious.getWidth(),btnPrevious.getHeight(), Image.SCALE_DEFAULT));
-        btnMute.setIcon(Mute);
-
-        ImageIcon imagen5 = new ImageIcon("src\\com\\edd\\player\\Imagenes\\switch_off.jpeg");
-        Icon suffle = new ImageIcon(imagen5.getImage().getScaledInstance(btnSuffle.getWidth(),btnSuffle.getHeight(), Image.SCALE_DEFAULT));
-        btnSuffle.setIcon(suffle);
-        estado = false;
-        SufflePlay = false;
-
-       LlenarListas();
-        SlidersChange();
-        basic_playerlistener();
-       /* jlistlistener();
-        jListCancioneslistener();
-        jListAlbumslistener();
-        jListArtistaslistener();
-        jListPlaylistlistener();*/
-
-        SliderVolume.setEnabled(false);
-        SliderProgreso.setEnabled(false);
-
-
-
-
-        /*this.setContentPane(this.jpContent);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setExtendedState(this.MAXIMIZED_BOTH);
-        this.pack();
-        this.setVisible(true);*/
-
-
-
-
-        JFrame frame = new JFrame("App");
-
-
-
-
-
-
-        DefaultListModel model = new DefaultListModel();
+        DefaultListModel<DTOLogin.Data.Year> model = new DefaultListModel();
         list1.setModel(model);
-        LoginDialog dialog = new LoginDialog();
 
+
+
+        DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion> modelCanciones = new DefaultListModel();
+        jListEnReproduccion.setModel(modelCanciones);
+
+
+
+
+
+        LoginDialog dialog = new LoginDialog();
         dialog.setSize(400,200);
         dialog.setLocationRelativeTo(null);
 
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                DTOLogin  dto = dialog.getData();
-
+                DTOLogin dto = dialog.getData();
+                DefaultListModel<DTOLogin.Data.Year> model = (DefaultListModel<DTOLogin.Data.Year>)list1.getModel();
                 for(com.edd.player.DTO.DTOLogin.Data.Year year : dto.data.getYears()){
-                   // App.this.getModel().addElement(year);
-
+                    model.addElement(year);
                 }
             }
         });
         dialog.setVisible(true);
     }
 
-    private void basic_playerlistener() {
-        Audio.addBasicPlayerListener(new BasicPlayerListener() {
-            @Override//Este metodo se cumple cuando abrimos la cancion...
-            public void opened(Object o, Map map) {
-                //System.out.println(map);
-
-                //LLamamos al metodo para que nos imprima el tiempo de duracion de la cancion....
-                CalculoSegundero(map.get("duration").toString(), "Duracion: ", jLabelTiempo);
-
-
-
-                SliderProgreso.setMaximum(Integer.parseInt(map.get("mp3.length.bytes").toString()));
-                SliderProgreso.setMinimum(0);
-            }
-
-            @Override//Este metodo se cumple cuando la cancion esta en progreso....
-            public void progress(int i, long l, byte[] bytes, Map propiedades) {
-
-                // ElementosMap= propiedades;
-
-
-
-
-                try{
-
-                }catch(ArrayIndexOutOfBoundsException e){System.out.println("Error"+e);}
-
-                //LLamamos al este metodo que nos calcula el tiempo trancurrido...
-                CalculoSegundero(propiedades.get("mp3.position.microseconds").toString(), "Transcurrido: ", jLabelTranscurrido);
-
-                Object bytesTranscurrido =  propiedades.get("mp3.position.byte");
-                bytesTranscurrido= Integer.parseInt(bytesTranscurrido.toString());
-                SliderProgreso.setValue((int)bytesTranscurrido);
-            }
-
-            @Override
-            public void stateUpdated(BasicPlayerEvent bpe) {
-
-                if (!bloquear){
-                    if (Audio.getStatus()==2 & repitaCancion){
-                        btnPlay_Pause.doClick();
-                    }
-                    if (jListEnReproduccion.getSelectedIndex()+1!=agregaCanciones.length){
-                        if (Audio.getStatus()==2 & siguiente){
-                            int pista = jListEnReproduccion.getAnchorSelectionIndex();
-                            jListEnReproduccion.setSelectedIndex(pista+1);
-                            repaint();
-                            btnPlay_Pause.doClick();
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void setController(BasicController bc) {
-
-            }
-
-
-        });
-    }
-
-    private void LlenarListas() {
-
-        for (com.edd.player.DTO.DTOLogin.Data.Year year: dto.data.years) {
-            for (com.edd.player.DTO.DTOLogin.Data.Year.Genere genero: year.generos) {
-               for ( com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist artista: genero.artistas){
-                   for (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album album: artista.albums) {
-                       for (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion: album.canciones  ) {
-
-                           ListaReproduccion.add(cancion);
-                       }
-                   }
-               }
-            }
-        }
-
-
-
-        /*AgregarCanciones agregaartistas = new AgregarCanciones(agregaArtistas,datos.getLista_Artistas(),jListArtistas);
-        agregaArtistas = agregaartistas.agregaGet();
-
-        AgregarAlbums agregaalbums = new AgregarAlbums(agregaAlbums,ListaAlbum,jListAlbums);
-        agregaAlbums = agregaalbums.agregaGet();*/
-
-        AgregarCanciones agregacanciones = new AgregarCanciones(agregaCanciones,ListaReproduccion,jListCanciones);
-        agregaCanciones = agregacanciones.agregaGet();
-
-    }
-
-    private void SlidersChange() {
-        SliderProgreso.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                try {
-                    Audio.pause();
-                } catch (BasicPlayerException ex) {
-                    // Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                try {
-                    SliderProgreso.setValue(SliderProgreso.getValue());
-                    Audio.resume();
-                    Audio.seek(SliderProgreso.getValue());
-                    Audio.setGain(volumen);
-
-
-                } catch (BasicPlayerException ex) {
-                    // Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-
-        SliderVolume.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-
-                if (Audio.getStatus()!=-1){
-                    try {
-                        volumen = SliderVolume.getValue()/100f;
-                        Audio.setGain(volumen);
-
-
-                    } catch (BasicPlayerException ex) {
-                        //Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        });
-
-
-    }
-
-    private void CalculoSegundero(String milisegundos, String texto, JLabel label) {
-        float horas,mint;
-        float segundostotal =  Integer.parseInt(milisegundos)/1000000;//Almacenamos y pasamos a segundos los microsegundos obtenenidos.
-
-        horas = (int)segundostotal/3600;		//Conversion de segundostotal a horas.
-        mint = (int)segundostotal/60-horas *60;		//Conversion de segundostotal a minutos.
-        segundostotal= segundostotal-mint*60-horas*3600;//Conversion de segundostotal a segundos.
-
-        String secundero = (int) mint +":"+ (int)segundostotal;//Creamos una variable String para almacenar el tiempo total horas, minutos, segundos.
-        label.setText(secundero);
+    public static void main(String[] args){
+        Reproductor ventana = new Reproductor();
+        ventana.setVisible(true);
+        ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     }
 
     private void btnPlay_PauseActionPerformed(ActionEvent e) {
         // TODO add your code here
-
-
-        if (estado == false) {
-
-            estado = true;
-            ImageIcon imagen = new ImageIcon("src\\com\\edd\\player\\Imagenes\\pause.png");
-            Icon play = new ImageIcon(imagen.getImage().getScaledInstance(btnPrevious.getWidth(),btnPrevious.getHeight(), Image.SCALE_DEFAULT));
-            btnPlay_Pause.setIcon(play);
-
-            if (Audio.getStatus()==1){
-                try {
-                    Audio.resume();
-                } catch (BasicPlayerException ex) {
-                    // Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-                int indice = jListEnReproduccion.getSelectedIndex();
-
-                if (ListaReproduccion!=null & Audio.getStatus()!=0 & indice!=-1){
-                    //System.out.println(Audio.getSleepTime());
-                    com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album.Cancion Cancion = ListaReproduccion.get(indice);
-
-                    String nombre = Cancion.getNombre_cancion();
-                    String NombreArtista = "";
-                    for (com.edd.player.DTO.DTOLogin.Data.Year year: dto.data.years) {
-                        for (com.edd.player.DTO.DTOLogin.Data.Year.Genere genero:year.generos ) {
-                            for (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist artista: genero.artistas) {
-                                for (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album album:artista.albums) {
-                                    for (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album.Cancion objeto:album.canciones) {
-                                        if (objeto.getNombre_cancion().equals(nombre)) {
-                                            NombreArtista = artista.getArtista();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-
-                    //System.out.println(ReproduceCancion);
-                    archivo = new File(Cancion.getRuta());
-
-                    SliderVolume.setEnabled(true);
-                    if (SufflePlay == false) {
-                        SliderProgreso.setEnabled(true);
-                    }
-
-
-
-                    //CaratulaCancion(archivo.toString());
-                    CaratulaCancion(Cancion.getRuta());
-                    try {
-
-                        audiofile = AudioFileIO.read(archivo);
-
-                        Audio.open(new File(Cancion.getRuta()));
-                        Audio.play();
-                        Audio.setGain(volumen);
-
-                        //int pista = jListCanciones.getAnchorSelectionIndex()+1;
-                        // lblTitulo.setText(audiofile.getTag().getFirst(FieldKey.TITLE));
-                        //lblArtista.setText(audiofile.getTag().getFirst(FieldKey.ARTIST));
-
-
-                        lblTitulo.setText(Cancion.getNombre_cancion());
-                        lblArtista.setText(NombreArtista);
-
-                    } catch (InvalidAudioFrameException|ReadOnlyFileException |TagException |IOException |CannotReadException|BasicPlayerException ex) {
-                        JOptionPane.showMessageDialog(this, ex + "\n  la informacion de imagen de la cancion excede el pixelado admitido por la libreria..."
-
-                                ,"Error en las Id3Tag",1);
-
-
-                        try {
-
-                            Audio.stop();
-                            com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album.Cancion RutaCancion = ListaReproduccion.get(indice);
-                            //String RutaCancion = datos.get(indice);
-                            AudioFile file = AudioFileIO.read(new File(RutaCancion.getRuta()));
-                            org.jaudiotagger.tag.Tag tager = file.getTag();
-                            tager.deleteField(FieldKey.COVER_ART);
-                            tager.deleteArtworkField();
-                            AudioFileIO.write(file);
-                            InputStream inputStream = new FileInputStream(ruta);
-                            OutputStream outputStream =  new FileOutputStream("Audio.mp3");
-
-                            byte[] buf = new byte[1024];
-                            int len;
-
-                            while ((len = inputStream.read(buf)) > 0) {
-                                outputStream.write(buf, 0, len);
-                            }
-                            inputStream.close();
-                            outputStream.close();
-
-
-                            System.out.println();
-                            System.out.println("El contenido de caratula mp3 es de masiado grande....Borrela!!!");
-
-                        }
-                        catch (IOException ex1) {/*System.out.println(ex1);*/}
-                        catch (TagException ex1) {/*System.out.println(ex1);*/}
-                        catch (ReadOnlyFileException ex1) {/*System.out.println(ex1);*/}
-                        catch (InvalidAudioFrameException ex1) {/*System.out.println(ex1);*/}
-                        catch (CannotWriteException ex1) {/*System.out.println(ex1);*/}
-                        catch (CannotReadException ex1) {/*System.out.println(ex1);*/}
-                        catch (BasicPlayerException ex1) {/*System.out.println(ex1);*/}
-
-
-
-                    }
-                }
-            }
-
-        } else if (estado == true) {
-            estado = false;
-            ImageIcon imagen = new ImageIcon("src\\com\\edd\\player\\Imagenes\\play.png");
-            Icon play = new ImageIcon(imagen.getImage().getScaledInstance(btnPrevious.getWidth(),btnPrevious.getHeight(), Image.SCALE_DEFAULT));
-            btnPlay_Pause.setIcon(play);
-
-            if (Audio.getStatus()==0){
-                try {
-                    Audio.pause();
-
-                } catch (BasicPlayerException ex) {
-                    // Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-
-
-
-
-
-    }
-
-    public void CaratulaCancion(String rut){
-        Image img = null;
-        try {
-            Mp3File Mp3A = new Mp3File(rut);
-            if (Mp3A.hasId3v2Tag()){
-                ID3v2 idTag = Mp3A.getId3v2Tag();
-                byte[] datosImagen = idTag.getAlbumImage();
-                img = ImageIO.read(new ByteArrayInputStream(datosImagen));
-            }
-            else {
-                img = ImageIO.read(getClass().getResource("imagen/caratula.png"));
-            }
-        }
-        catch (IllegalArgumentException | IOException ex1){System.out.printf("No Expecificas ruta"); }
-        catch (NullPointerException e1) {System.out.println("No hay caratula en el mp3");
-
-            try {
-                img = ImageIO.read(getClass().getResource("imagen/caratula.png"));
-            }
-            catch (IOException e) {}
-        }
-        catch (UnsupportedTagException | InvalidDataException e) {}
-        //Este codigo nos ayudara a reajustar la imagen a nuestro JLabel para que este se redimensione.....
-        /*int ancho = img.getWidth(null);
-        int alto = img.getHeight(null);
-        if (ancho>390){
-            ancho=390;
-        }
-        if (alto>270){
-            alto=270;
-        }*/
-        img = img.getScaledInstance(lblCaratula.getWidth(), lblCaratula.getHeight(),0);
-        lblCaratula.setIcon(new ImageIcon(img));
     }
 
     private void btnNextActionPerformed(ActionEvent e) {
         // TODO add your code here
-
-        if (SufflePlay == true) {
-
-
-            int tamaño = ListaReproduccion.size();
-            Random aleatorio = new Random();
-            int indice = aleatorio.nextInt(tamaño);
-            if (jListEnReproduccion.getSelectedIndex()+1!=agregaCanciones.length){
-                bloquear=true;
-                jListEnReproduccion.setSelectedIndex(indice);
-                Comprobacion(0);
-                bloquear=false;
-            }
-
-
-
-
-
-        } else if (SufflePlay == false) {
-            if (jListEnReproduccion.getSelectedIndex()+1!=agregaCanciones.length){
-                bloquear=true;
-                Comprobacion(1);
-                bloquear=false;
-            }
-        }
-    }
-
-    private void Comprobacion(int opera) {
-
-        //Audio.getStatus() valor -1 al empezar...
-        //valor 0 cuando se reproduce..
-        //valor 1 cuando esta pausado..
-        //valor 2 cuando detienes la cancion...
-
-        int indice = jListEnReproduccion.getSelectedIndex();
-        if (ListaReproduccion!=null & indice!=-1 /*&  Audio.getStatus()==0 */){
-            //El metodo getAnchotSelectionIndex obtenemos el numero de posicion en el que se encuentra el JList...
-            int pista = jListEnReproduccion.getAnchorSelectionIndex();
-            jListEnReproduccion.setSelectedIndex(pista+opera);
-            try {
-                Audio.stop();
-
-            } catch (BasicPlayerException ex) {
-                //Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            btnPlay_Pause.doClick();
-            btnPlay_Pause.doClick();
-
-        }
     }
 
     private void btnPreviousActionPerformed(ActionEvent e) {
-
         // TODO add your code here
-
-
-
-        if (jListEnReproduccion.getSelectedIndex()!=0){
-            bloquear=true;
-            Comprobacion(-1);
-            bloquear=false;
-        }
     }
 
     private void btnSuffleActionPerformed(ActionEvent e) {
-
-
         // TODO add your code here
+    }
+
+    private void list1ValueChanged(ListSelectionEvent e) {
+        DTOLogin.Data.Year year = (DTOLogin.Data.Year) list1.getSelectedValue();
+        DefaultListModel<DTOLogin.Data.Year.Genere> modelGeneres = new DefaultListModel();
+        jListGeneros.setModel(modelGeneres);
+        if(year != null){
+            for(com.edd.player.DTO.DTOLogin.Data.Year.Genere genere : year.getGeneros()){
+                modelGeneres.addElement(genere);
+            }
+        }
+
+    }
+
+    private void jListGenerosValueChanged(ListSelectionEvent e) {
+        DTOLogin.Data.Year.Genere genere = (DTOLogin.Data.Year.Genere) jListGeneros.getSelectedValue();
+        DefaultListModel<DTOLogin.Data.Year.Genere.Artist> modelArtists = new DefaultListModel();
+        jListArtistas.setModel(modelArtists);
+        if(genere != null){
+            button2.setText("Arbo B "+genere.genero+" ");
+            for(com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist artist : genere.getArtistas()){
+                modelArtists.addElement(artist);
+            }
+        }
+
+    }
+
+    private void jListArtistasValueChanged(ListSelectionEvent e) {
+        // TODO add your code here
+        DTOLogin.Data.Year.Genere.Artist artist = (DTOLogin.Data.Year.Genere.Artist) jListArtistas.getSelectedValue();
+        DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album> modelAlbums = new DefaultListModel();
+        jListAlbums.setModel(modelAlbums);
+
+        if(artist != null){
+            button3.setText("ABB "+artist.artista);
+            for(com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album album : artist.getAlbums()){
+                modelAlbums.addElement(album);
+            }
+        }
+    }
+
+    private void jListAlbumsValueChanged(ListSelectionEvent e) {
+        DTOLogin.Data.Year.Genere.Artist.Album album = (DTOLogin.Data.Year.Genere.Artist.Album) jListAlbums.getSelectedValue();
+        DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion> modelCanciones = new DefaultListModel();
+        jListCanciones.setModel(modelCanciones);
+        if(album != null){
+            button3.setText("Lista "+album.nombre);
+            for(com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion : album.getCanciones()){
+                modelCanciones.addElement(cancion);
+            }
+        }
+    }
+
+    private void button1ActionPerformed(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void button1MouseReleased(MouseEvent e) {
+        // TODO add your code here
+        try{
+            Graphviz graph = new Graphviz();
+            graph.CrearGrafo(HttpHelper.getMatrix());
+        }catch (Exception ex){
+            System.out.print(ex.getMessage().toString());
+        }
+    }
+
+    private void btnSuffleMouseReleased(MouseEvent e) {
+        // TODO add your code here
+        DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion> modelCanciones =  (DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>)jListEnReproduccion.getModel();
+
+        com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album.Cancion)jListCanciones.getSelectedValue();
+        if(cancion !=null){
+
+            modelCanciones.addElement(cancion);
+        }
 
     }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        // Generated using JFormDesigner Evaluation license - Walter Garcia
+        // Generated using JFormDesigner Evaluation license - Erik Sierra
         panel1 = new JPanel();
         lblCaratula = new JLabel();
         panel2 = new JPanel();
@@ -572,6 +182,10 @@ public class Reproductor extends JFrame {
         scrollPane7 = new JScrollPane();
         jListEnReproduccion = new JList();
         btnSuffle = new JButton();
+        button1 = new JButton();
+        button2 = new JButton();
+        button3 = new JButton();
+        button4 = new JButton();
 
         //======== this ========
         Container contentPane = getContentPane();
@@ -689,6 +303,8 @@ public class Reproductor extends JFrame {
                 //---- list1 ----
                 list1.setBackground(new Color(23, 23, 23));
                 list1.setForeground(Color.white);
+                list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                list1.addListSelectionListener(e -> list1ValueChanged(e));
                 scrollPane1.setViewportView(list1);
             }
             panel3.add(scrollPane1);
@@ -700,6 +316,8 @@ public class Reproductor extends JFrame {
                 //---- jListGeneros ----
                 jListGeneros.setBackground(new Color(23, 23, 23));
                 jListGeneros.setForeground(Color.white);
+                jListGeneros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                jListGeneros.addListSelectionListener(e -> jListGenerosValueChanged(e));
                 scrollPane2.setViewportView(jListGeneros);
             }
             panel3.add(scrollPane2);
@@ -711,6 +329,8 @@ public class Reproductor extends JFrame {
                 //---- jListArtistas ----
                 jListArtistas.setBackground(new Color(23, 23, 23));
                 jListArtistas.setForeground(Color.white);
+                jListArtistas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                jListArtistas.addListSelectionListener(e -> jListArtistasValueChanged(e));
                 scrollPane3.setViewportView(jListArtistas);
             }
             panel3.add(scrollPane3);
@@ -722,6 +342,8 @@ public class Reproductor extends JFrame {
                 //---- jListAlbums ----
                 jListAlbums.setBackground(new Color(23, 23, 23));
                 jListAlbums.setForeground(Color.white);
+                jListAlbums.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                jListAlbums.addListSelectionListener(e -> jListAlbumsValueChanged(e));
                 scrollPane4.setViewportView(jListAlbums);
             }
             panel3.add(scrollPane4);
@@ -733,6 +355,7 @@ public class Reproductor extends JFrame {
                 //---- jListCanciones ----
                 jListCanciones.setBackground(new Color(23, 23, 23));
                 jListCanciones.setForeground(Color.white);
+                jListCanciones.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                 scrollPane5.setViewportView(jListCanciones);
             }
             panel3.add(scrollPane5);
@@ -779,8 +402,41 @@ public class Reproductor extends JFrame {
 
         //---- btnSuffle ----
         btnSuffle.addActionListener(e -> btnSuffleActionPerformed(e));
+        btnSuffle.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                btnSuffleMouseReleased(e);
+            }
+        });
         contentPane.add(btnSuffle);
-        btnSuffle.setBounds(935, 25, 45, 25);
+        btnSuffle.setBounds(945, 10, 50, 35);
+
+        //---- button1 ----
+        button1.setText("Ver Matriz");
+        button1.addActionListener(e -> button1ActionPerformed(e));
+        button1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                button1MouseReleased(e);
+            }
+        });
+        contentPane.add(button1);
+        button1.setBounds(220, 15, 183, button1.getPreferredSize().height);
+
+        //---- button2 ----
+        button2.setText("Arbol B");
+        contentPane.add(button2);
+        button2.setBounds(410, 15, 180, button2.getPreferredSize().height);
+
+        //---- button3 ----
+        button3.setText("ABB");
+        contentPane.add(button3);
+        button3.setBounds(605, 15, 195, button3.getPreferredSize().height);
+
+        //---- button4 ----
+        button4.setText("Canciones");
+        contentPane.add(button4);
+        button4.setBounds(805, 15, 130, button4.getPreferredSize().height);
 
         { // compute preferred size
             Dimension preferredSize = new Dimension();
@@ -801,7 +457,7 @@ public class Reproductor extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - Walter Garcia
+    // Generated using JFormDesigner Evaluation license - Erik Sierra
     private JPanel panel1;
     private JLabel lblCaratula;
     private JPanel panel2;
@@ -831,5 +487,9 @@ public class Reproductor extends JFrame {
     private JScrollPane scrollPane7;
     private JList jListEnReproduccion;
     private JButton btnSuffle;
+    private JButton button1;
+    private JButton button2;
+    private JButton button3;
+    private JButton button4;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

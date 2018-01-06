@@ -60,4 +60,46 @@ public class HttpHelper {
 
 
     }
+    public static String getMatrix() throws Exception
+    {
+
+        URL obj = new URL(serverURl+"print_matrix");
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+
+        //add reuqest header
+        con.setRequestMethod("GET");
+//        con.setRequestProperty("User-Agent", USER_AGENT);
+//       // con.setRequestProperty("Content-Type", "application/json");
+//        String urlParameters = "";
+//
+//        // Send post request
+//        con.setDoOutput(true);
+//        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+//        wr.writeBytes(urlParameters);
+//        wr.flush();
+//        wr.close();
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+        System.out.println("Post parameters : " + serverURl+"print_matrix");
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+        return response.toString() ;
+
+
+    }
 }

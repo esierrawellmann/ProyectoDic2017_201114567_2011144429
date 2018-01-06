@@ -17,7 +17,7 @@ public class mypanel extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        // Generated using JFormDesigner Evaluation license - Walter Garcia
+        // Generated using JFormDesigner Evaluation license - Erik Sierra
         scrollPane1 = new JScrollPane();
         list1 = new JList();
 
@@ -56,7 +56,7 @@ public class mypanel extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - Walter Garcia
+    // Generated using JFormDesigner Evaluation license - Erik Sierra
     private JScrollPane scrollPane1;
     private JList list1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables

@@ -133,6 +133,8 @@ new FormModel {
 						name: "list1"
 						"background": new java.awt.Color( 23, 23, 23, 255 )
 						"foreground": new java.awt.Color( 255, 255, 255, 255 )
+						"selectionMode": 0
+						addEvent( new FormEvent( "javax.swing.event.ListSelectionListener", "valueChanged", "list1ValueChanged", true ) )
 					} )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 0
@@ -146,6 +148,8 @@ new FormModel {
 						name: "jListGeneros"
 						"background": new java.awt.Color( 23, 23, 23, 255 )
 						"foreground": new java.awt.Color( 255, 255, 255, 255 )
+						"selectionMode": 0
+						addEvent( new FormEvent( "javax.swing.event.ListSelectionListener", "valueChanged", "jListGenerosValueChanged", true ) )
 					} )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 75
@@ -159,6 +163,8 @@ new FormModel {
 						name: "jListArtistas"
 						"background": new java.awt.Color( 23, 23, 23, 255 )
 						"foreground": new java.awt.Color( 255, 255, 255, 255 )
+						"selectionMode": 0
+						addEvent( new FormEvent( "javax.swing.event.ListSelectionListener", "valueChanged", "jListArtistasValueChanged", true ) )
 					} )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 190
@@ -172,6 +178,8 @@ new FormModel {
 						name: "jListAlbums"
 						"background": new java.awt.Color( 23, 23, 23, 255 )
 						"foreground": new java.awt.Color( 255, 255, 255, 255 )
+						"selectionMode": 0
+						addEvent( new FormEvent( "javax.swing.event.ListSelectionListener", "valueChanged", "jListAlbumsValueChanged", true ) )
 					} )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 390
@@ -185,6 +193,7 @@ new FormModel {
 						name: "jListCanciones"
 						"background": new java.awt.Color( 23, 23, 23, 255 )
 						"foreground": new java.awt.Color( 255, 255, 255, 255 )
+						"selectionMode": 0
 					} )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 590
@@ -227,11 +236,46 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "btnSuffle"
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnSuffleActionPerformed", true ) )
+				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "btnSuffleMouseReleased", true ) )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"x": 935
-				"y": 25
-				"width": 45
-				"height": 25
+				"x": 945
+				"y": 10
+				"width": 50
+				"height": 35
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button1"
+				"text": "Ver Matriz"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "button1ActionPerformed", true ) )
+				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button1MouseReleased", true ) )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 220
+				"y": 15
+				"width": 183
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button2"
+				"text": "Arbol B"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 410
+				"y": 15
+				"width": 180
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button3"
+				"text": "ABB"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 605
+				"y": 15
+				"width": 195
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button4"
+				"text": "Canciones"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 805
+				"y": 15
+				"width": 130
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
