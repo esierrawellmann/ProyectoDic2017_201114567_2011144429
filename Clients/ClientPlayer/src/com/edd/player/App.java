@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 
+
 public class App extends JFrame{
     private JButton testButton;
     private JPanel jpContent;
@@ -17,12 +18,35 @@ public class App extends JFrame{
     private JList list3;
     private JList list4;
     private JList list5;
+    private JPanel panel1 = new JPanel(null);
+    private JButton button1;
+    DefaultListModel model;
 
 
 
 
-    public App() {
+    public App( ) {
 
+
+
+        this.setContentPane(this.jpContent);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setExtendedState(this.MAXIMIZED_BOTH);
+        this.pack();
+        this.setVisible(true);
+
+
+
+
+        JFrame frame = new JFrame("App");
+
+
+
+
+
+
+        DefaultListModel model = new DefaultListModel();
+        list1.setModel(model);
         LoginDialog dialog = new LoginDialog();
 
         dialog.setSize(400,200);
@@ -44,6 +68,8 @@ public class App extends JFrame{
             public void windowClosed(WindowEvent e) {
                 DTOLogin dto = dialog.getData();
                 for(com.edd.player.DTO.DTOLogin.Data.Year year : dto.data.getYears()){
+                    App.this.getModel().addElement(year);
+
                     ((DefaultListModel)list1.getModel()).addElement(year);
                 }
             }
@@ -71,12 +97,11 @@ public class App extends JFrame{
     }
     public static void main(String[] args){
 
-        App myApp = new App();
-        myApp.setContentPane(myApp.jpContent);
-        myApp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        myApp.setExtendedState(myApp.MAXIMIZED_BOTH);
-        myApp.setVisible(true);
-        myApp.pack();
+
+        new App();
+
+
+
     }
 
     private void createUIComponents() {
