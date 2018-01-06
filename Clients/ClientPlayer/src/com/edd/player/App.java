@@ -10,7 +10,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 
-
 public class App extends JFrame{
     private JButton testButton;
     private JPanel jpContent;
@@ -19,7 +18,7 @@ public class App extends JFrame{
     private JList list3;
     private JList list4;
     private JList list5;
-    private JPanel panel1 = new JPanel(null);
+    private JPanel panel1;
     private JButton button1;
     DefaultListModel model;
 
@@ -33,10 +32,10 @@ public class App extends JFrame{
 
 
 
-    public App( ) {
+    public App() {
 
-
-        
+        mypanel pn = new mypanel();
+        panel1 = pn;
         this.setContentPane(this.jpContent);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setExtendedState(this.MAXIMIZED_BOTH);
@@ -44,7 +43,7 @@ public class App extends JFrame{
         this.setVisible(true);
 
 
-
+        panel1.setVisible(true);
 
         JFrame frame = new JFrame("App");
 
@@ -66,7 +65,6 @@ public class App extends JFrame{
                 DTOLogin dto = dialog.getData();
                 for(com.edd.player.DTO.DTOLogin.Data.Year year : dto.data.getYears()){
                     App.this.getModel().addElement(year);
-
                 }
             }
         });
@@ -75,7 +73,11 @@ public class App extends JFrame{
     public static void main(String[] args){
 
 
-        new App();
+      //  new App();
+
+        Reproductor ventana = new Reproductor();
+
+        ventana.setVisible(true);
 
 
 
