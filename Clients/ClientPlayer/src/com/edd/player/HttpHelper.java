@@ -15,6 +15,9 @@ import java.net.URL;
 public class HttpHelper {
     static final String serverURl = "http://localhost:8081/";
     private static final String USER_AGENT = "Mozilla/5.0";
+
+
+
     public  static DTOLogin logIn(String user, String password) throws Exception{
 
         URL obj = new URL(serverURl+"login");
