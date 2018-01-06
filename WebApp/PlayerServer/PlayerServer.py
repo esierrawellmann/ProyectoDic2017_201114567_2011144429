@@ -91,7 +91,7 @@ def delete_song(y_year,r_genere,r_artist,r_album,r_song):
                     dato_abb.canciones.delete(cancion)
     return ""
 
-@app.route("/print_matrix")
+@app.route("/print_matrix", methods=['GET'])
 def print_matrix():
     songs_directory = g.songs_directory
     return songs_directory.show_matrix()
