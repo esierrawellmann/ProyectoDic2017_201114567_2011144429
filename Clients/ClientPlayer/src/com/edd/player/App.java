@@ -10,6 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 
+
 public class App extends JFrame{
     private JButton testButton;
     private JPanel jpContent;
@@ -18,6 +19,8 @@ public class App extends JFrame{
     private JList list3;
     private JList list4;
     private JList list5;
+    private JPanel panel1 = new JPanel(null);
+    private JButton button1;
     DefaultListModel model;
 
     public DefaultListModel getModel() {
@@ -30,9 +33,24 @@ public class App extends JFrame{
 
 
 
-    public App() {
+    public App( ) {
+
+
+        
+        this.setContentPane(this.jpContent);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setExtendedState(this.MAXIMIZED_BOTH);
+        this.pack();
+        this.setVisible(true);
+
+
+
 
         JFrame frame = new JFrame("App");
+
+
+
+
 
 
         DefaultListModel model = new DefaultListModel();
@@ -48,6 +66,7 @@ public class App extends JFrame{
                 DTOLogin dto = dialog.getData();
                 for(com.edd.player.DTO.DTOLogin.Data.Year year : dto.data.getYears()){
                     App.this.getModel().addElement(year);
+
                 }
             }
         });
@@ -55,11 +74,14 @@ public class App extends JFrame{
     }
     public static void main(String[] args){
 
-        App myApp = new App();
-        myApp.setContentPane(myApp.jpContent);
-        myApp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        myApp.setExtendedState(myApp.MAXIMIZED_BOTH);
-        myApp.pack();
-        myApp.setVisible(true);
+
+        new App();
+
+
+
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }
