@@ -5,19 +5,39 @@
 package com.edd.player;
 
 import java.awt.event.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.event.*;
 import com.edd.player.DTO.DTOLogin;
 import com.edd.player.LoginDialog;
+import javazoom.jlgui.basicplayer.BasicPlayerException;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * @author Walter Garcia
  */
 public class Reproductor extends JFrame {
+
+    Controles_Reproductor mi_reproductor = new Controles_Reproductor();
+    JFileChooser fileChooser = new JFileChooser();
+    File file;
+
+
+    public boolean reproduciendo= false;
+    public String ruta_mp3 ="La Chalana.mp3";
+
+
     public Reproductor() {
         initComponents();
 
@@ -50,6 +70,8 @@ public class Reproductor extends JFrame {
         dialog.setVisible(true);
     }
 
+
+
     public static void main(String[] args){
         Reproductor ventana = new Reproductor();
         ventana.setVisible(true);
@@ -59,10 +81,37 @@ public class Reproductor extends JFrame {
 
     private void btnPlay_PauseActionPerformed(ActionEvent e) {
         // TODO add your code here
+
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo MP3", "mp3", "mp3");
+        fileChooser.setFileFilter(filtro);
+
+        int seleccion = fileChooser.showOpenDialog(this);
+
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            file = fileChooser.getSelectedFile();
+            try {
+
+                AudioInputStream in= AudioSystem.getAudioInputStream(file);
+                mi_reproductor.control.open(in);//Le decimos al control del player que abra el archivo
+                mi_reproductor.control.play();
+            } catch (BasicPlayerException ex) {
+                Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnsupportedAudioFileException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     private void btnNextActionPerformed(ActionEvent e) {
         // TODO add your code here
+
+        try {
+            mi_reproductor.control.stop();
+        } catch (BasicPlayerException ex) {
+            Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void btnPreviousActionPerformed(ActionEvent e) {
@@ -152,7 +201,7 @@ public class Reproductor extends JFrame {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        // Generated using JFormDesigner Evaluation license - Erik Sierra
+        // Generated using JFormDesigner Evaluation license - Renan Luna
         panel1 = new JPanel();
         lblCaratula = new JLabel();
         panel2 = new JPanel();
@@ -457,7 +506,7 @@ public class Reproductor extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - Erik Sierra
+    // Generated using JFormDesigner Evaluation license - Renan Luna
     private JPanel panel1;
     private JLabel lblCaratula;
     private JPanel panel2;
