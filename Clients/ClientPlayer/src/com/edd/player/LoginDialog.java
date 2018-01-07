@@ -1,10 +1,6 @@
 package com.edd.player;
-
-import com.google.gson.Gson;
+import com.edd.player.DTO.DTOLogin;
 import com.sun.deploy.net.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClientBuilder;
 
 
 import javax.swing.*;
@@ -16,6 +12,16 @@ public class LoginDialog extends JDialog {
     private JButton buttonCancel;
     private JTextField textField1;
     private JTextField textField2;
+
+    public DTOLogin getData() {
+        return data;
+    }
+
+    public void setData(DTOLogin data) {
+        this.data = data;
+    }
+
+    public DTOLogin data;
 
     public LoginDialog() {
         setContentPane(contentPane);
@@ -55,7 +61,7 @@ public class LoginDialog extends JDialog {
 
         try{
 
-            HttpHelper.logIn(textField1.getText(),textField2.getText());
+            setData(HttpHelper.logIn(textField1.getText(),textField2.getText()));
         }catch (Exception e){
             System.out.print(e.getMessage());
         }

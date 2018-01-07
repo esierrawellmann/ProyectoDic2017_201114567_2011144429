@@ -4,34 +4,27 @@ from __future__ import (nested_scopes, generators, division, absolute_import, wi
 
 
 class BTree(object):
-  """A BTree implementation with search and insert functions. Capable of any order t."""
-
   class Node(object):
-    """A simple B-Tree Node."""
     abb = None
 
     def __init__(self, t):
       self.keys = []
       self.children = []
       self.leaf = True
-      # t is the order of the parent B-Tree. Nodes need this value to define max size and splitting.
       self._t = t
 
     def split(self, parent, payload):
-      """Split a node and reassign keys/children."""
       new_node = self.__class__(self._t)
 
       mid_point = self.size//2
       split_value = self.keys[mid_point]
       parent.add_key(split_value)
 
-      # Add keys and children to appropriate nodes
       new_node.children = self.children[mid_point + 1:]
       self.children = self.children[:mid_point + 1]
       new_node.keys = self.keys[mid_point+1:]
       self.keys = self.keys[:mid_point]
 
-      # If the new_node has children, set it as internal node
       if len(new_node.children) > 0:
         new_node.leaf = False
 
@@ -50,17 +43,11 @@ class BTree(object):
       return len(self.keys)
 
     def add_key(self, value):
-      """Add a key to a node. The node will have room for the key by definition."""
       self.keys.append(value)
       new_value = self.keys[-1]
       self.keys.sort(key=lambda x: x.nombre.lower().strip(), reverse=False)
       return new_value
     def add_child(self, new_node):
-      """
-      Add a child to a node. This will sort the node's children, allowing for children
-      to be ordered even after middle nodes are split.
-      returns: an order list of child nodes
-      """
       i = len(self.children) - 1
       while i >= 0 and self.children[i].keys[0].nombre.lower().strip() > new_node.keys[0].nombre.lower().strip():
         i -= 1
@@ -68,25 +55,17 @@ class BTree(object):
 
 
   def __init__(self, t):
-    """
-    Create the B-tree. t is the order of the tree. Tree has no keys when created.
-    This implementation allows duplicate key values, although that hasn't been checked
-    strenuously.
-    """
     self._t = t
     if self._t <= 1:
       raise ValueError("B-Tree must have a degree of 2 or more.")
     self.root = self.Node(t)
 
   def insert(self, payload):
-    """Insert a new key of value payload into the B-Tree."""
     node = self.root
-    # Root is handled explicitly since it requires creating 2 new nodes instead of the usual one.
     if node._is_full:
       new_root = self.Node(self._t)
       new_root.children.append(self.root)
       new_root.leaf = False
-      # node is being set to the node containing the ranges we want for payload insertion.
       node = node.split(new_root, payload)
       self.root = new_root
     while not node.leaf:
@@ -101,11 +80,9 @@ class BTree(object):
         node = next.split(node, payload)
       else:
         node = next
-    # Since we split all full nodes on the way down, we can simply insert the payload in the leaf.
     return node.add_key(payload)
 
   def search(self, value, node=None):
-    """Return True if the B-Tree contains a key that matches the value."""
 
     if node is None:
       node = self.root
@@ -113,7 +90,6 @@ class BTree(object):
     if key:
       return key[0]
     elif node.leaf:
-      # If we are in a leaf, there is no more to check.
       return None
     else:
       i = 0
@@ -121,8 +97,22 @@ class BTree(object):
         i += 1
       return self.search(value, node.children[i])
 
+  def copy(self,value):
+      new = BTree(3)
+      this_level = [self.root]
+      while this_level:
+          next_level = []
+          for node in this_level:
+              if node.children:
+                  next_level.extend(node.children)
+              for i, n in enumerate(node.keys):
+                  if n.nombre != value.nombre:
+                    new.insert(n)
+              this_level = next_level
+      return  new
+
+
   def print_order(self):
-    """Print an level-order representation."""
     this_level = [self.root]
     while this_level:
       next_level = []
@@ -153,3 +143,17 @@ class BTree(object):
           level = level + 1;
           this_level = next_level
       return "digraph G {{ node[shape=record];\n {0} }}".format(output)
+
+  def print_arbol_json(self,asObject = True):
+    this_level = [self.root]
+    level = 0
+    output = ""
+    while this_level:
+      str =""
+      next_level = []
+      for index, node in enumerate(this_level):
+        if node.children:
+          next_level.extend(node.children)
+        str += ','.join(['{{\"artista\":\"{0}\", {1} }}'.format(v.nombre,v.albums.structure_disk_json(v.albums.raiz,False)) for i, v in enumerate(node.keys)])+","
+      this_level = next_level
+    return "{1}\"artistas\":[{0}]{2}".format(str[:-1],"{" if asObject else "","}" if asObject else "")
