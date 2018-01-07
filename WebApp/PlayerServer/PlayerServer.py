@@ -202,7 +202,7 @@ def show_artist_bbtree(y_year,r_genere,r_artist):
         genere = _year.data.generes.search_genere(r_genere)
         if genere is not None:
             node_artist = Artista()
-            node_artist.nombre = r_artist
+            node_artist.nombre = r_artist.replace("+"," ")
             node_artist.b_year = _year.data.year
             node_artist.b_genere = genere.data.genere
             abb = genere.data.arbol.search(node_artist)
@@ -218,11 +218,11 @@ def show_artist_disks(y_year,r_genere,r_artist,r_disk_name):
         genere = _year.data.generes.search_genere(r_genere)
         if genere is not None:
             node_artist = Artista()
-            node_artist.nombre = r_artist
+            node_artist.nombre = r_artist.replace("+"," ")
             node_artist.b_year = _year.data.year
             node_artist.b_genere = genere.data.genere
             abb = genere.data.arbol.search(node_artist)
-            nodo_disco = abb.albums.buscar(abb.albums.raiz,r_disk_name)
+            nodo_disco = abb.albums.buscar(abb.albums.raiz,r_disk_name.replace("+"," "))
             if nodo_disco is not None:
                 return nodo_disco.canciones.structure_songs_string()
     return "digraph G {{ node[shape=record];\n  }}"
@@ -324,7 +324,7 @@ def agregar_lista():
 def eliminar(p_username):
     userList = g.users
     if userList is not None:
-        usr = userList.search_user(p_username)
+        usr = userList.search_user(p_username.replace("+"," "))
         if usr is not None:
             userList.delete(usr)
     return  userList.structure_string()
