@@ -11,6 +11,7 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class HttpHelper {
     static final String serverURl = "http://localhost:8081/";
@@ -65,25 +66,146 @@ public class HttpHelper {
 
         URL obj = new URL(serverURl+"print_matrix");
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-
-        //add reuqest header
         con.setRequestMethod("GET");
-//        con.setRequestProperty("User-Agent", USER_AGENT);
-//       // con.setRequestProperty("Content-Type", "application/json");
-//        String urlParameters = "";
-//
-//        // Send post request
-//        con.setDoOutput(true);
-//        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-//        wr.writeBytes(urlParameters);
-//        wr.flush();
-//        wr.close();
-
         int responseCode = con.getResponseCode();
         System.out.println("\nSending 'GET' request to URL : " + serverURl);
-        System.out.println("Post parameters : " + serverURl+"print_matrix");
-        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+        return response.toString() ;
+
+
+    }
+    public static String getBTree(String year , String genere) throws Exception
+    {
+        String urlStr= "show_artist_tree/"+year+"/"+genere;
+
+        URL obj = new URL(serverURl+ URLEncoder.encode(urlStr,"UTF-8"));
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+        return response.toString() ;
+
+
+    }
+    public static String getABBTree(String year , String genere,String artist) throws Exception
+    {
+
+        URL obj = new URL(serverURl+"show_artist_bbtree/"+ URLEncoder.encode(year,"UTF-8")+"/"+URLEncoder.encode(genere,"UTF-8")+"/"+URLEncoder.encode(artist,"UTF-8"));
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+        return response.toString() ;
+
+
+    }
+
+    public static String getSongList(String year , String genere,String artist,String disk) throws Exception
+    {
+
+        URL obj = new URL(serverURl+"show_artist_disks/"+ URLEncoder.encode(year,"UTF-8")+"/"+URLEncoder.encode(genere,"UTF-8")+"/"+URLEncoder.encode(artist,"UTF-8")+"/"+URLEncoder.encode(disk,"UTF-8"));
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+        return response.toString() ;
+
+
+    }
+
+    public static String getUserList() throws Exception
+    {
+
+        URL obj = new URL(serverURl+"print_users");
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+        return response.toString() ;
+
+
+    }
+    public static String deleteUser(String usrName) throws Exception
+    {
+
+        URL obj = new URL(serverURl+"eliminar/"+ URLEncoder.encode(usrName,"UTF-8"));
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
