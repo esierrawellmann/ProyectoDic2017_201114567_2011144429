@@ -11,6 +11,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.event.*;
 import com.edd.player.DTO.DTOLogin;
 import com.edd.player.LoginDialog;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 
 import java.awt.*;
@@ -30,10 +31,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Reproductor extends JFrame {
 
     Controles_Reproductor mi_reproductor = new Controles_Reproductor();
+    JFileChooser fileChooser = new JFileChooser();
     File file;
 
 
     public boolean reproduciendo= false;
+    public String ruta_mp3 ="La Chalana.mp3";
 
 
     public Reproductor() {
@@ -60,8 +63,10 @@ public class Reproductor extends JFrame {
             public void windowClosed(WindowEvent e) {
                 DTOLogin dto = dialog.getData();
                 DefaultListModel<DTOLogin.Data.Year> model = (DefaultListModel<DTOLogin.Data.Year>)list1.getModel();
-                for(com.edd.player.DTO.DTOLogin.Data.Year year : dto.data.getYears()){
-                    model.addElement(year);
+                if(dto != null){
+                    for(com.edd.player.DTO.DTOLogin.Data.Year year : dto.data.getYears()){
+                        model.addElement(year);
+                    }
                 }
             }
         });
@@ -215,29 +220,163 @@ public class Reproductor extends JFrame {
         }
     }
 
-    private void button7MouseReleased(MouseEvent e) {
-        // TODO add your code here
-    }
-
-    private void button9MouseReleased(MouseEvent e) {
-        // TODO add your code here
-    }
-
     private void button2MouseReleased(MouseEvent e) {
         // TODO add your code here
+        com.edd.player.DTO.DTOLogin.Data.Year year = (com.edd.player.DTO.DTOLogin.Data.Year)list1.getSelectedValue();
+
+        com.edd.player.DTO.DTOLogin.Data.Year.Genere genere = (com.edd.player.DTO.DTOLogin.Data.Year.Genere)jListGeneros.getSelectedValue();
+        if(genere !=null && year!= null){
+
+            try{
+                Graphviz graph = new Graphviz();
+                graph.CrearGrafo(HttpHelper.getBTree(year.getYear(),genere.genero));
+            }catch (Exception ex){
+                System.out.print(ex.getMessage().toString());
+            }
+        }
     }
 
     private void button3MouseReleased(MouseEvent e) {
         // TODO add your code here
+        com.edd.player.DTO.DTOLogin.Data.Year year = (com.edd.player.DTO.DTOLogin.Data.Year)list1.getSelectedValue();
+
+        com.edd.player.DTO.DTOLogin.Data.Year.Genere genere = (com.edd.player.DTO.DTOLogin.Data.Year.Genere)jListGeneros.getSelectedValue();
+        com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist artist = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist)jListArtistas.getSelectedValue();
+
+        if(genere !=null && year!= null && artist != null){
+
+            try{
+                Graphviz graph = new Graphviz();
+                graph.CrearGrafo(HttpHelper.getABBTree(year.getYear(),genere.genero,artist.artista));
+            }catch (Exception ex){
+                System.out.print(ex.getMessage().toString());
+            }
+        }
+
     }
 
     private void button4MouseReleased(MouseEvent e) {
         // TODO add your code here
+        com.edd.player.DTO.DTOLogin.Data.Year year = (com.edd.player.DTO.DTOLogin.Data.Year)list1.getSelectedValue();
+
+        com.edd.player.DTO.DTOLogin.Data.Year.Genere genere = (com.edd.player.DTO.DTOLogin.Data.Year.Genere)jListGeneros.getSelectedValue();
+        com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist artist = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist)jListArtistas.getSelectedValue();
+        com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album album = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album)jListAlbums.getSelectedValue();
+
+        if(genere !=null && year!= null && artist != null && album != null){
+
+            try{
+                Graphviz graph = new Graphviz();
+                graph.CrearGrafo(HttpHelper.getSongList(year.getYear(),genere.genero,artist.artista,album.nombre));
+            }catch (Exception ex){
+                System.out.print(ex.getMessage().toString());
+            }
+        }
+    }
+
+    private void button7MouseReleased(MouseEvent e) {
+        // TODO add your code here
+        try{
+            Graphviz graph = new Graphviz();
+            graph.CrearGrafo(HttpHelper.getUserList());
+        }catch (Exception ex){
+            System.out.print(ex.getMessage().toString());
+        }
+    }
+
+    private void button9MouseReleased(MouseEvent e) {
+        // TODO add your code here
+        String str = JOptionPane.showInputDialog(null,"Eliminar Usuario Con Nombre?");
+        try{
+            HttpHelper.deleteUser(str);
+        }catch (Exception ex){
+            System.out.print(ex.getMessage().toString());
+        }
+
+    }
+
+    private void refreshLibrary(){
+        //print result
+
+        try{
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+            DTOLogin.Data loginResponse = objectMapper.readValue(HttpHelper.getLibrary(), DTOLogin.Data.class);
+
+            DefaultListModel<DTOLogin.Data.Year> model = new DefaultListModel<>();
+            list1.setModel(model);
+            if(loginResponse != null){
+                for(com.edd.player.DTO.DTOLogin.Data.Year year : loginResponse.getYears()){
+                    model.addElement(year);
+                }
+            }
+
+        }catch (Exception e){
+            System.out.print("Failed To Gather Library");
+        }
+    }
+
+    private void button5MouseReleased(MouseEvent e) {
+        // TODO add your code here
+        com.edd.player.DTO.DTOLogin.Data.Year year = (com.edd.player.DTO.DTOLogin.Data.Year)list1.getSelectedValue();
+
+        com.edd.player.DTO.DTOLogin.Data.Year.Genere genere = (com.edd.player.DTO.DTOLogin.Data.Year.Genere)jListGeneros.getSelectedValue();
+
+
+        if(genere !=null && year!= null ){
+
+            try{
+                HttpHelper.deleteGenere(year.getYear().toString(),genere.genero);
+                refreshLibrary();
+            }catch (Exception ex){
+                System.out.print(ex.getMessage().toString());
+            }
+        }
+    }
+
+    private void button6MouseReleased(MouseEvent e) {
+        // TODO add your code here
+        com.edd.player.DTO.DTOLogin.Data.Year year = (com.edd.player.DTO.DTOLogin.Data.Year)list1.getSelectedValue();
+
+        com.edd.player.DTO.DTOLogin.Data.Year.Genere genere = (com.edd.player.DTO.DTOLogin.Data.Year.Genere)jListGeneros.getSelectedValue();
+        com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist artist = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist)jListArtistas.getSelectedValue();
+
+        if(genere !=null && year!= null && artist != null){
+
+            try{
+                HttpHelper.deleteArtist(year.getYear(),genere.genero,artist.artista);
+                refreshLibrary();
+            }catch (Exception ex){
+                System.out.print(ex.getMessage().toString());
+            }
+        }
+
+    }
+
+    private void button8MouseReleased(MouseEvent e) {
+        // TODO add your code here
+        com.edd.player.DTO.DTOLogin.Data.Year year = (com.edd.player.DTO.DTOLogin.Data.Year)list1.getSelectedValue();
+
+        com.edd.player.DTO.DTOLogin.Data.Year.Genere genere = (com.edd.player.DTO.DTOLogin.Data.Year.Genere)jListGeneros.getSelectedValue();
+        com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist artist = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist)jListArtistas.getSelectedValue();
+        com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album album = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album)jListAlbums.getSelectedValue();
+        com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album.Cancion)jListCanciones.getSelectedValue();
+
+        if(genere !=null && year!= null && artist != null && album != null && cancion != null){
+
+            try{
+                HttpHelper.deleteSong(year.getYear(),genere.genero,artist.artista,album.nombre,cancion.nombre_cancion);
+                refreshLibrary();
+            }catch (Exception ex){
+                System.out.print(ex.getMessage().toString());
+            }
+        }
     }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        // Generated using JFormDesigner Evaluation license - Renan Luna
+        // Generated using JFormDesigner Evaluation license - Erik Sierra
         panel1 = new JPanel();
         lblCaratula = new JLabel();
         panel2 = new JPanel();
@@ -270,6 +409,7 @@ public class Reproductor extends JFrame {
         button6 = new JButton();
         button7 = new JButton();
         button9 = new JButton();
+        button8 = new JButton();
         btnSuffle = new JButton();
         button1 = new JButton();
         button2 = new JButton();
@@ -474,11 +614,25 @@ public class Reproductor extends JFrame {
 
             //---- button5 ----
             button5.setText("Eliminar Genero");
+            button5.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    button5MouseReleased(e);
+                    button5MouseReleased(e);
+                }
+            });
             panel3.add(button5);
             button5.setBounds(15, 0, 175, button5.getPreferredSize().height);
 
             //---- button6 ----
             button6.setText("Eliminar Artista");
+            button6.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    button6MouseReleased(e);
+                    button6MouseReleased(e);
+                }
+            });
             panel3.add(button6);
             button6.setBounds(200, 0, 180, button6.getPreferredSize().height);
 
@@ -491,7 +645,7 @@ public class Reproductor extends JFrame {
                 }
             });
             panel3.add(button7);
-            button7.setBounds(395, 0, 195, button7.getPreferredSize().height);
+            button7.setBounds(595, 0, 100, button7.getPreferredSize().height);
 
             //---- button9 ----
             button9.setText("Eliminar Usuario");
@@ -502,7 +656,18 @@ public class Reproductor extends JFrame {
                 }
             });
             panel3.add(button9);
-            button9.setBounds(595, 0, 190, button9.getPreferredSize().height);
+            button9.setBounds(690, 0, 100, button9.getPreferredSize().height);
+
+            //---- button8 ----
+            button8.setText("Eliminar Cancion");
+            button8.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    button8MouseReleased(e);
+                }
+            });
+            panel3.add(button8);
+            button8.setBounds(400, 0, 185, button8.getPreferredSize().height);
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
@@ -596,7 +761,7 @@ public class Reproductor extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - Renan Luna
+    // Generated using JFormDesigner Evaluation license - Erik Sierra
     private JPanel panel1;
     private JLabel lblCaratula;
     private JPanel panel2;
@@ -629,6 +794,7 @@ public class Reproductor extends JFrame {
     private JButton button6;
     private JButton button7;
     private JButton button9;
+    private JButton button8;
     private JButton btnSuffle;
     private JButton button1;
     private JButton button2;

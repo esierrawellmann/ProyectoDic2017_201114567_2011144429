@@ -230,6 +230,8 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "button5"
 					"text": "Eliminar Genero"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button5MouseReleased", true ) )
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button5MouseReleased", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 15
 					"y": 0
@@ -238,6 +240,8 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "button6"
 					"text": "Eliminar Artista"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button6MouseReleased", true ) )
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button6MouseReleased", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 200
 					"y": 0
@@ -248,18 +252,27 @@ new FormModel {
 					"text": "Usuarios"
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button7MouseReleased", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 395
+					"x": 595
 					"y": 0
-					"width": 195
+					"width": 100
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "button9"
 					"text": "Eliminar Usuario"
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button9MouseReleased", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"x": 595
+					"x": 690
 					"y": 0
-					"width": 190
+					"width": 100
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "button8"
+					"text": "Eliminar Cancion"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button8MouseReleased", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 400
+					"y": 0
+					"width": 185
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 210
