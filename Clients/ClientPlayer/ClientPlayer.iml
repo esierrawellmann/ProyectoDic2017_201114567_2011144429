@@ -27,5 +27,10 @@
     </orderEntry>
     <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-databind:2.8.4" level="project" />
     <orderEntry type="library" name="tritonus_share" level="project" />
+    <orderEntry type="library" name="basicplayer3.0" level="project" />
+    <orderEntry type="library" name="jaudiotagger-2.0.4" level="project" />
+    <orderEntry type="library" name="commons-logging-api" level="project" />
+    <orderEntry type="library" name="jl1.0" level="project" />
+    <orderEntry type="library" name="mp3spi1.9.4" level="project" />
   </component>
 </module>
