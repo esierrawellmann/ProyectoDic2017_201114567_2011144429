@@ -37,36 +37,36 @@ def index():
 def print_users():
     return users.structure_string()
 
-@app.route("/dequeue_user")
-def dequeue_user():
-    print(users.structure_string())
-    usr = users.dequeue()
-    print(users.structure_string())
-    return usr
+@app.route("/dequeue_user/<u_user>")
+def dequeue_user(u_user):
+    usr = users.search_user(u_user.replace("+"," "))
+    if usr is not None:
+        usr.data.cola.dequeue()
+    return ""
 
 @app.route("/show_user_queue/<u_user>")
 def show_user_queue(u_user):
-    usr = users.search_user(u_user)
+    usr = users.search_user(u_user.replace("+"," "))
     if usr is not None:
         return usr.data.cola.structure_queue_string()
     return ""
 
 @app.route("/add_song_to_queue/<y_year>/<r_genere>/<r_artist>/<r_album>/<r_song>/<r_user>")
 def add_song_to_queue(y_year,r_genere,r_artist,r_album,r_song,r_user):
-    _year = g.songs_directory.years.search_year(y_year)
+    _year = g.songs_directory.years.search_year(y_year.replace("+"," "))
     if _year is not None:
-        genere = _year.data.generes.search_genere(r_genere)
+        genere = _year.data.generes.search_genere(r_genere.replace("+"," "))
         if genere is not None:
             node_artist = Artista()
-            node_artist.nombre = r_artist
+            node_artist.nombre = r_artist.replace("+"," ")
             node_artist.b_year = _year.data.year
             node_artist.b_genere = genere.data.genere
             abb = genere.data.arbol.search(node_artist)
             if abb is not None:
-                dato_abb = abb.albums.buscar(abb.albums.raiz,r_album)
+                dato_abb = abb.albums.buscar(abb.albums.raiz,r_album.replace("+"," "))
                 if dato_abb is not None:
-                    cancion = dato_abb.canciones.search_song(r_song)
-                    usr = users.search_user(r_user)
+                    cancion = dato_abb.canciones.search_song(r_song.replace("+"," "))
+                    usr = users.search_user(r_user.replace("+"," "))
                     if usr is not None:
                         usr.data.cola.add(cancion.data)
                         return ""
@@ -100,16 +100,16 @@ def print_matrix():
 @app.route("/get_disk/<y_year>/<r_genere>/<r_artist>/<r_disk_name>")
 def get_disk(y_year,r_genere,r_artist,r_disk_name):
     data = "{\"canciones\":[]}"
-    _year = g.songs_directory.years.search_year(y_year)
+    _year = g.songs_directory.years.search_year(y_year.replace("+"," "))
     if _year is not None:
-        genere = _year.data.generes.search_genere(r_genere)
+        genere = _year.data.generes.search_genere(r_genere.replace("+"," "))
         if genere is not None:
             node_artist = Artista()
-            node_artist.nombre = r_artist
+            node_artist.nombre = r_artist.replace("+"," ")
             node_artist.b_year = _year.data.year
             node_artist.b_genere = genere.data.genere
             abb = genere.data.arbol.search(node_artist)
-            nodo_disco = abb.albums.buscar(abb.albums.raiz, r_disk_name)
+            nodo_disco = abb.albums.buscar(abb.albums.raiz, r_disk_name.replace("+"," "))
             if nodo_disco is not None:
                 data = nodo_disco.canciones.structure_songs_json()
     r = make_response(data);
@@ -136,12 +136,12 @@ def delete_artist(y_year,r_genere,r_artist):
 @app.route("/get_disks_by_year_genere/<y_year>/<r_genere>/<r_artist>")
 def get_disks_by_year_genere(y_year,r_genere,r_artist):
     data = "{\"albums\":[]}"
-    _year = g.songs_directory.years.search_year(y_year)
+    _year = g.songs_directory.years.search_year(y_year.replace("+"," "))
     if _year is not None:
-        genere = _year.data.generes.search_genere(r_genere)
+        genere = _year.data.generes.search_genere(r_genere.replace("+"," "))
         if genere is not None:
             node_artist = Artista()
-            node_artist.nombre = r_artist
+            node_artist.nombre = r_artist.replace("+"," ")
             node_artist.b_year = _year.data.year
             node_artist.b_genere = genere.data.genere
             abb = genere.data.arbol.search(node_artist)
@@ -155,9 +155,9 @@ def get_disks_by_year_genere(y_year,r_genere,r_artist):
 @app.route("/get_artists_by_year_and_genere/<y_year>/<r_genere>")
 def get_artists_by_year_and_genere(y_year,r_genere):
     data = "{\"artists\":[]}"
-    _year = g.songs_directory.years.search_year(y_year)
+    _year = g.songs_directory.years.search_year(y_year.replace("+"," "))
     if _year is not None:
-        genere = _year.data.generes.search_genere(r_genere)
+        genere = _year.data.generes.search_genere(r_genere.replace("+"," "))
         if genere is not None:
             data = genere.data.arbol.print_arbol_json()
     r = make_response(data);
@@ -176,7 +176,7 @@ def libray():
 @app.route("/get_generes_by_year/<y_year>")
 def get_generes_by_year(y_year):
     data = "{\"generes\":[]}"
-    _year = g.songs_directory.years.search_year(y_year)
+    _year = g.songs_directory.years.search_year(y_year.replace("+"," "))
     if _year is not None:
         data = _year.data.generes.structure_generes_json()
     r = make_response(data);
@@ -185,18 +185,18 @@ def get_generes_by_year(y_year):
 
 @app.route("/show_artist_tree/<year>/<genere>")
 def show_artist_tree(year,genere):
-    _year = g.songs_directory.years.search_year(year)
+    _year = g.songs_directory.years.search_year(year.replace("+"," "))
     if _year is not None:
-        genere = _year.data.generes.search_genere(genere)
+        genere = _year.data.generes.search_genere(genere.replace("+"," "))
         if genere is not None:
             return genere.data.arbol.show_arbol()
     return "digraph G {{ node[shape=record];\n  }}"
 
 @app.route("/show_artist_bbtree/<y_year>/<r_genere>/<r_artist>")
 def show_artist_bbtree(y_year,r_genere,r_artist):
-    _year = g.songs_directory.years.search_year(y_year)
+    _year = g.songs_directory.years.search_year(y_year.replace("+"," "))
     if _year is not None:
-        genere = _year.data.generes.search_genere(r_genere)
+        genere = _year.data.generes.search_genere(r_genere.replace("+"," "))
         if genere is not None:
             node_artist = Artista()
             node_artist.nombre = r_artist.replace("+"," ")
@@ -210,9 +210,9 @@ def show_artist_bbtree(y_year,r_genere,r_artist):
 
 @app.route("/show_artist_disks/<y_year>/<r_genere>/<r_artist>/<r_disk_name>")
 def show_artist_disks(y_year,r_genere,r_artist,r_disk_name):
-    _year = g.songs_directory.years.search_year(y_year)
+    _year = g.songs_directory.years.search_year(y_year.replace("+"," "))
     if _year is not None:
-        genere = _year.data.generes.search_genere(r_genere)
+        genere = _year.data.generes.search_genere(r_genere.replace("+"," "))
         if genere is not None:
             node_artist = Artista()
             node_artist.nombre = r_artist.replace("+"," ")
@@ -332,7 +332,7 @@ def eliminar(p_username):
 
 @app.route('/eliminar_genero/<r_genere>/<y_year>')
 def eliminar_genero(r_genere,y_year):
-    _year = g.songs_directory.years.search_year(y_year)
+    _year = g.songs_directory.years.search_year(y_year.replace("+"," "))
     if _year is not None:
         genere = _year.data.generes.search_genere(r_genere.replace("+"," "))
         if genere is not None:

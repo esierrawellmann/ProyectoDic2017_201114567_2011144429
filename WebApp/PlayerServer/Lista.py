@@ -150,7 +150,7 @@ class Lista(object):
         if self.head is not None:
             nodes += "subgraph col"+str(temp.index)+"{ \n rank=UD; \n"
             while (True):
-                nodes += "user{0}[label={1}] \n".format(temp.index, temp.data.username)
+                nodes += "user{0}[label=\"{1}\"]; \n".format(temp.index, temp.data.username)
                 nodes += "user{0}->user{1} \n".format(temp.index,temp.next.index)
                 nodes += "user{1}->user{0} \n".format(temp.prev.index, temp.index)
                 temp = temp.next
@@ -167,7 +167,7 @@ class Lista(object):
         if self.head is not None:
             nodes += "subgraph col"+str(temp.index)+"{ \n rank=UD; \n"
             while (True):
-                nodes += "user{0}[label={1}] \n".format(temp.index, temp.data.nombre)
+                nodes += "user{0}[label=\"{1}\"] \n".format(temp.index, temp.data.nombre)
                 nodes += "user{0}->user{1} \n".format(temp.index,temp.next.index)
                 nodes += "user{1}->user{0} \n".format(temp.prev.index, temp.index)
                 temp = temp.next
