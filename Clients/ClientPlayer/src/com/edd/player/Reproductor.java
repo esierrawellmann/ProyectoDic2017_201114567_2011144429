@@ -96,41 +96,35 @@ public class Reproductor extends JFrame {
             /*long index = ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).firstElement().getIndex();
             ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).remove((int)index);*/
 
-        /*FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo MP3", "mp3", "mp3");
-        fileChooser.setFileFilter(filtro);
 
-        int seleccion = fileChooser.showOpenDialog(this);
-
-        if (seleccion == JFileChooser.APPROVE_OPTION) {
-            //file = fileChooser.getSelectedFile();*/
             file = new File(ruta_cancion);
 
-            try {
-
-                AudioInputStream in = AudioSystem.getAudioInputStream(file);
-                mi_reproductor.control.open(in);//Le decimos al control del player que abra el archivo
-                mi_reproductor.control.play();
-            } catch (BasicPlayerException ex) {
-                Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (UnsupportedAudioFileException e1) {
-                e1.printStackTrace();
-            } catch (IOException e1) {
-                e1.printStackTrace();
+            if (file.exists() && !file.isDirectory())
+            {
+                try {
+                    AudioInputStream in = AudioSystem.getAudioInputStream(file);
+                    mi_reproductor.control.open(in);
+                    mi_reproductor.control.play();
+                } catch (BasicPlayerException ex) {
+                    Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnsupportedAudioFileException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
+            else
+                {
+                    System.out.println("el archivo no existe");
+                }
         }
     }
-    //}
 
     private void btnNextActionPerformed(ActionEvent e) {
         // TODO add your code here
-        /*if(index_lista<contador)
-        {
-            index_lista++;
-        }*/
 
         if (jListEnReproduccion.getModel().getSize() >=1)
         {
-
             ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).remove(0);
         }
 
