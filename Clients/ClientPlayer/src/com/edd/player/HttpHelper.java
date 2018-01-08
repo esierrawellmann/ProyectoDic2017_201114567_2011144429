@@ -224,4 +224,120 @@ public class HttpHelper {
 
 
     }
+
+
+
+    public static String deleteGenere(String year, String genere) throws Exception
+    {
+
+        URL obj = new URL(serverURl+"eliminar_genero/"+ URLEncoder.encode(genere,"UTF-8")+"/"+URLEncoder.encode(year,"UTF-8"));
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+        return response.toString() ;
+
+
+    }
+
+
+
+    public static String getLibrary() throws Exception
+    {
+
+        URL obj = new URL(serverURl+"library");
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+        return response.toString() ;
+
+
+    }
+
+    public static String deleteSong(String year, String genere,String artist,String album,String song) throws Exception
+    {
+
+        URL obj = new URL(serverURl+"delete_song/"+ URLEncoder.encode(year,"UTF-8")+"/"+URLEncoder.encode(genere,"UTF-8")+"/"+URLEncoder.encode(artist,"UTF-8")+"/"+URLEncoder.encode(album,"UTF-8")+"/"+URLEncoder.encode(song,"UTF-8"));
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+        return response.toString() ;
+
+
+    }
+
+    public static String deleteArtist(String year, String genere,String artist) throws Exception
+    {
+
+        URL obj = new URL(serverURl+"delete_artist/"+ URLEncoder.encode(year,"UTF-8")+"/"+URLEncoder.encode(genere,"UTF-8")+"/"+URLEncoder.encode(artist,"UTF-8"));
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+        return response.toString() ;
+
+
+    }
 }
