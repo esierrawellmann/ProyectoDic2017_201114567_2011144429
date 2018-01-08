@@ -184,7 +184,7 @@ class Lista(object):
         if self.head is not None:
             nodes += "{0}\"canciones\":[".format("{" if asObject else "")
             while (True):
-                nodes += "{{\"index\":{0},\"nombre_cancion\":\"{1}\",\"ruta\":\"{2}\"  }}".format(str(temp.index), temp.data.nombre,temp.data.path)
+                nodes += "{{\"index\":{0},\"nombre_cancion\":\"{1}\",\"ruta\":\"{2}\",\"year\":\"{3}\" ,\"genere\":\"{4}\",\"artist\":\"{5}\",\"album\":\"{6}\"  }}".format(str(temp.index), temp.data.nombre,temp.data.path,temp.data.year,temp.data.genere,temp.data.artist,temp.data.album)
                 temp = temp.next
                 if (temp == self.head):
                     break

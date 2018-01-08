@@ -289,6 +289,10 @@ def upload_file():
                                     node_cancion = Cancion()
                                     node_cancion.nombre = cancion.find("nombre").text
                                     node_cancion.path = cancion.find("path").text
+                                    node_cancion.artist = node_artist.nombre
+                                    node_cancion.year = node_album.año
+                                    node_cancion.genere = node_album.genero
+                                    node_cancion.album = node_album.nombre
                                     node_album.canciones.add(node_cancion)
                             artist_b_genere.albums.raiz = artist_b_genere.albums.insert(artist_b_genere.albums.raiz,node_album)
 
@@ -354,6 +358,10 @@ class Album(object):
 class Cancion(object):
     nombre = None
     path = None
+    year =None
+    genere = None
+    artist = None
+    album = None
 
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'

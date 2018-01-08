@@ -173,6 +173,45 @@ public class DTOLogin {
                             public String nombre_cancion;
                             public String ruta;
 
+                            public String getYear() {
+                                return year;
+                            }
+
+                            public void setYear(String year) {
+                                this.year = year;
+                            }
+
+                            public String getGenere() {
+                                return genere;
+                            }
+
+                            public void setGenere(String genere) {
+                                this.genere = genere;
+                            }
+
+                            public String getArtist() {
+                                return artist;
+                            }
+
+                            public void setArtist(String artist) {
+                                this.artist = artist;
+                            }
+
+                            public String getAlbum() {
+                                return album;
+                            }
+
+                            public void setAlbum(String album) {
+                                this.album = album;
+                            }
+
+                            public String year;
+
+                            public String genere;
+
+                            public String artist;
+
+                            public String album;
 
 
                             public Cancion() {
