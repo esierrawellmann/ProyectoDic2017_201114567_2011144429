@@ -30,12 +30,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Reproductor extends JFrame {
 
     Controles_Reproductor mi_reproductor = new Controles_Reproductor();
-    JFileChooser fileChooser = new JFileChooser();
     File file;
 
 
     public boolean reproduciendo= false;
-    public String ruta_mp3 ="La Chalana.mp3";
 
 
     public Reproductor() {
@@ -62,10 +60,8 @@ public class Reproductor extends JFrame {
             public void windowClosed(WindowEvent e) {
                 DTOLogin dto = dialog.getData();
                 DefaultListModel<DTOLogin.Data.Year> model = (DefaultListModel<DTOLogin.Data.Year>)list1.getModel();
-                if(dto != null){
-                    for(com.edd.player.DTO.DTOLogin.Data.Year year : dto.data.getYears()){
-                        model.addElement(year);
-                    }
+                for(com.edd.player.DTO.DTOLogin.Data.Year year : dto.data.getYears()){
+                    model.addElement(year);
                 }
             }
         });
@@ -83,17 +79,30 @@ public class Reproductor extends JFrame {
 
     private void btnPlay_PauseActionPerformed(ActionEvent e) {
         // TODO add your code here
+        String ruta_cancion = "";
 
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo MP3", "mp3", "mp3");
+        //if(jListEnReproduccion.getModel() != null){
+
+        if (jListEnReproduccion.getModel().getSize() >=1) {
+
+            //ruta_cancion = ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).elementAt(index_lista).ruta;
+
+            ruta_cancion = ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).firstElement().ruta;
+            /*long index = ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).firstElement().getIndex();
+            ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).remove((int)index);*/
+
+        /*FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo MP3", "mp3", "mp3");
         fileChooser.setFileFilter(filtro);
 
         int seleccion = fileChooser.showOpenDialog(this);
 
         if (seleccion == JFileChooser.APPROVE_OPTION) {
-            file = fileChooser.getSelectedFile();
+            //file = fileChooser.getSelectedFile();*/
+            file = new File(ruta_cancion);
+
             try {
 
-                AudioInputStream in= AudioSystem.getAudioInputStream(file);
+                AudioInputStream in = AudioSystem.getAudioInputStream(file);
                 mi_reproductor.control.open(in);//Le decimos al control del player que abra el archivo
                 mi_reproductor.control.play();
             } catch (BasicPlayerException ex) {
@@ -105,19 +114,30 @@ public class Reproductor extends JFrame {
             }
         }
     }
+    //}
 
     private void btnNextActionPerformed(ActionEvent e) {
         // TODO add your code here
+        /*if(index_lista<contador)
+        {
+            index_lista++;
+        }*/
 
+        if (jListEnReproduccion.getModel().getSize() >=1)
+        {
+
+            ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).remove(0);
+        }
+
+    }
+
+    private void btnPreviousActionPerformed(ActionEvent e) {
+        // TODO add your code here
         try {
             mi_reproductor.control.stop();
         } catch (BasicPlayerException ex) {
             Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    private void btnPreviousActionPerformed(ActionEvent e) {
-        // TODO add your code here
     }
 
     private void btnSuffleActionPerformed(ActionEvent e) {
@@ -191,6 +211,7 @@ public class Reproductor extends JFrame {
 
     private void btnSuffleMouseReleased(MouseEvent e) {
         // TODO add your code here
+
         DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion> modelCanciones =  (DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>)jListEnReproduccion.getModel();
 
         com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album.Cancion)jListCanciones.getSelectedValue();
@@ -198,82 +219,26 @@ public class Reproductor extends JFrame {
 
             modelCanciones.addElement(cancion);
         }
-
-    }
-
-    private void button2MouseReleased(MouseEvent e) {
-        // TODO add your code here
-        com.edd.player.DTO.DTOLogin.Data.Year year = (com.edd.player.DTO.DTOLogin.Data.Year)list1.getSelectedValue();
-
-        com.edd.player.DTO.DTOLogin.Data.Year.Genere genere = (com.edd.player.DTO.DTOLogin.Data.Year.Genere)jListGeneros.getSelectedValue();
-        if(genere !=null && year!= null){
-
-            try{
-                Graphviz graph = new Graphviz();
-                graph.CrearGrafo(HttpHelper.getBTree(year.getYear(),genere.genero));
-            }catch (Exception ex){
-                System.out.print(ex.getMessage().toString());
-            }
-        }
-    }
-
-    private void button3MouseReleased(MouseEvent e) {
-        // TODO add your code here
-        com.edd.player.DTO.DTOLogin.Data.Year year = (com.edd.player.DTO.DTOLogin.Data.Year)list1.getSelectedValue();
-
-        com.edd.player.DTO.DTOLogin.Data.Year.Genere genere = (com.edd.player.DTO.DTOLogin.Data.Year.Genere)jListGeneros.getSelectedValue();
-        com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist artist = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist)jListArtistas.getSelectedValue();
-
-        if(genere !=null && year!= null && artist != null){
-
-            try{
-                Graphviz graph = new Graphviz();
-                graph.CrearGrafo(HttpHelper.getABBTree(year.getYear(),genere.genero,artist.artista));
-            }catch (Exception ex){
-                System.out.print(ex.getMessage().toString());
-            }
-        }
-
-    }
-
-    private void button4MouseReleased(MouseEvent e) {
-        // TODO add your code here
-        com.edd.player.DTO.DTOLogin.Data.Year year = (com.edd.player.DTO.DTOLogin.Data.Year)list1.getSelectedValue();
-
-        com.edd.player.DTO.DTOLogin.Data.Year.Genere genere = (com.edd.player.DTO.DTOLogin.Data.Year.Genere)jListGeneros.getSelectedValue();
-        com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist artist = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist)jListArtistas.getSelectedValue();
-        com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album album = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album)jListAlbums.getSelectedValue();
-
-        if(genere !=null && year!= null && artist != null && album != null){
-
-            try{
-                Graphviz graph = new Graphviz();
-                graph.CrearGrafo(HttpHelper.getSongList(year.getYear(),genere.genero,artist.artista,album.nombre));
-            }catch (Exception ex){
-                System.out.print(ex.getMessage().toString());
-            }
-        }
     }
 
     private void button7MouseReleased(MouseEvent e) {
         // TODO add your code here
-        try{
-            Graphviz graph = new Graphviz();
-            graph.CrearGrafo(HttpHelper.getUserList());
-        }catch (Exception ex){
-            System.out.print(ex.getMessage().toString());
-        }
     }
 
     private void button9MouseReleased(MouseEvent e) {
         // TODO add your code here
-        String str = JOptionPane.showInputDialog(null,"Eliminar Usuario Con Nombre?");
-        try{
-            HttpHelper.deleteUser(str);
-        }catch (Exception ex){
-            System.out.print(ex.getMessage().toString());
-        }
+    }
 
+    private void button2MouseReleased(MouseEvent e) {
+        // TODO add your code here
+    }
+
+    private void button3MouseReleased(MouseEvent e) {
+        // TODO add your code here
+    }
+
+    private void button4MouseReleased(MouseEvent e) {
+        // TODO add your code here
     }
 
     private void initComponents() {
