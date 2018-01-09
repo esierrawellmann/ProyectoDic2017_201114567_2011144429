@@ -217,7 +217,7 @@ class Lista(object):
         if self.head is not None:
             nodes += "{0}\"years\":[".format("{" if asObject else "")
             while (True):
-                nodes += "{{\"index\":{0},\"year\":\"{1}\" {2} }}".format(str(temp.index), temp.data.year,("," if temp.data.generes else "" ) + temp.data.generes.structure_generes_json(False))
+                nodes += "{{\"index\":{0},\"year\":\"{1}\" {2} }}".format(str(temp.index), temp.data.year,("," if temp.data.generes.head else "" ) + temp.data.generes.structure_generes_json(False))
                 temp = temp.next
                 if (temp == self.head):
                     break

@@ -33,7 +33,7 @@ class ABB(object):
         else:
             self.show_abb_json(raiz.left)
             self.show_abb_json(raiz.right)
-            self.str_json+="{{\"nombre\":\"{0}\",{1} }},".format(raiz.dato.nombre,raiz.dato.canciones.structure_songs_json(False))
+            self.str_json+="{{\"nombre\":\"{0}\" {1} }},".format(raiz.dato.nombre, ("," if raiz.dato.canciones.head else "" ) +  raiz.dato.canciones.structure_songs_json(False))
 
     def show_abb(self, raiz):
         if raiz == None:
