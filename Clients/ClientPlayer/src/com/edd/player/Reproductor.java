@@ -90,8 +90,6 @@ public class Reproductor extends JFrame {
         // TODO add your code here
         String ruta_cancion = "";
 
-        //if(jListEnReproduccion.getModel() != null){
-
         if (jListEnReproduccion.getModel().getSize() >=1) {
 
             //ruta_cancion = ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).elementAt(index_lista).ruta;
@@ -100,30 +98,25 @@ public class Reproductor extends JFrame {
             /*long index = ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).firstElement().getIndex();
             ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).remove((int)index);*/
 
-        /*FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo MP3", "mp3", "mp3");
-        fileChooser.setFileFilter(filtro);
-
-        int seleccion = fileChooser.showOpenDialog(this);
-
-        if (seleccion == JFileChooser.APPROVE_OPTION) {
-            //file = fileChooser.getSelectedFile();*/
             file = new File(ruta_cancion);
 
-            try {
-
-                AudioInputStream in = AudioSystem.getAudioInputStream(file);
-                mi_reproductor.control.open(in);//Le decimos al control del player que abra el archivo
-                mi_reproductor.control.play();
-                HttpHelper.dequeue(user);
-            } catch (BasicPlayerException ex) {
-                Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (UnsupportedAudioFileException e1) {
-                e1.printStackTrace();
-            } catch (IOException e1) {
-                e1.printStackTrace();
+            if (file.exists() && !file.isDirectory())
+            {
+                try {
+                    AudioInputStream in = AudioSystem.getAudioInputStream(file);
+                    mi_reproductor.control.open(in);
+                    mi_reproductor.control.play();
+                } catch (BasicPlayerException ex) {
+                    Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnsupportedAudioFileException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
-            catch (Exception ex) {
-            ex.printStackTrace();
+            else
+            {
+                System.out.println("el archivo no existe");
             }
         }
     }
