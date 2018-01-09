@@ -19,8 +19,8 @@ public class Graphviz {
             Random randomGenerator = new Random();
 
             String str_grafo = Grafo;
-            String graph_name ="graph"+randomGenerator.nextInt(999999999)+".dot";
-            String ruta = path+graph_name;
+            String graph_name ="graph"+randomGenerator.nextInt(999999999);
+            String ruta = path+graph_name+".dot";
             File archivo = new File(ruta);
             BufferedWriter bw;
 
@@ -31,7 +31,7 @@ public class Graphviz {
             String dotPath = "dot";
 
             String fileInputPath = ruta;
-            String fileOutputPath = path_grafo +".jpg";
+            String fileOutputPath = path_grafo+graph_name +".jpg";
 
             String tParam = "-Tjpg";
             String tOParam = "-o";
@@ -45,7 +45,7 @@ public class Graphviz {
 
             Runtime rt = Runtime.getRuntime();
 
-            rt.exec( cmd );
+            rt.exec( cmd ).waitFor();
 
             String[] cmd2 = new String[2];
             cmd2[0] = "eog";

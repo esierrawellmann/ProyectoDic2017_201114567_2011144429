@@ -13,6 +13,8 @@ public class LoginDialog extends JDialog {
     private JTextField textField1;
     private JTextField textField2;
 
+
+
     public DTOLogin getData() {
         return data;
     }
@@ -23,6 +25,15 @@ public class LoginDialog extends JDialog {
 
     public DTOLogin data;
 
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String user;
     public LoginDialog() {
         setContentPane(contentPane);
         setModal(true);
@@ -62,6 +73,8 @@ public class LoginDialog extends JDialog {
         try{
 
             setData(HttpHelper.logIn(textField1.getText(),textField2.getText()));
+            setUser(textField1.getText());
+
         }catch (Exception e){
             System.out.print(e.getMessage());
         }

@@ -38,7 +38,7 @@ public class HttpHelper {
         wr.close();
 
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'POST' request to URL : " + serverURl);
+        System.out.println("\nSending 'POST' request to URL : " + obj.toString());
         System.out.println("Post parameters : " + urlParameters);
         System.out.println("Response Code : " + responseCode);
 
@@ -68,7 +68,7 @@ public class HttpHelper {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+        System.out.println("\nSending 'GET' request to URL : " + obj.toString());
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
@@ -95,7 +95,7 @@ public class HttpHelper {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+        System.out.println("\nSending 'GET' request to URL : " + obj.toString());
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
@@ -121,7 +121,7 @@ public class HttpHelper {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+        System.out.println("\nSending 'GET' request to URL : " + obj.toString());
 
 
         BufferedReader in = new BufferedReader(
@@ -149,7 +149,7 @@ public class HttpHelper {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+        System.out.println("\nSending 'GET' request to URL : " + obj.toString());
 
 
         BufferedReader in = new BufferedReader(
@@ -177,7 +177,7 @@ public class HttpHelper {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+        System.out.println("\nSending 'GET' request to URL : " + obj.toString());
 
 
         BufferedReader in = new BufferedReader(
@@ -204,7 +204,7 @@ public class HttpHelper {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+        System.out.println("\nSending 'GET' request to URL : " + obj.toString());
 
 
         BufferedReader in = new BufferedReader(
@@ -234,7 +234,7 @@ public class HttpHelper {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+        System.out.println("\nSending 'GET' request to URL : " + obj.toString());
 
 
         BufferedReader in = new BufferedReader(
@@ -264,7 +264,7 @@ public class HttpHelper {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+        System.out.println("\nSending 'GET' request to URL : " + obj.toString());
 
 
         BufferedReader in = new BufferedReader(
@@ -292,7 +292,7 @@ public class HttpHelper {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+        System.out.println("\nSending 'GET' request to URL : " + obj.toString());
 
 
         BufferedReader in = new BufferedReader(
@@ -320,7 +320,91 @@ public class HttpHelper {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + serverURl);
+        System.out.println("\nSending 'GET' request to URL : " + obj.toString());
+
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+        return response.toString() ;
+
+
+    }
+
+    public static String enqueue(String year, String genere,String artist,String album,String song,String user) throws Exception
+    {
+
+        URL obj = new URL(serverURl+"add_song_to_queue/"+ URLEncoder.encode(year,"UTF-8")+"/"+URLEncoder.encode(genere,"UTF-8")+"/"+URLEncoder.encode(artist,"UTF-8")+"/"+URLEncoder.encode(album,"UTF-8")+"/"+URLEncoder.encode(song,"UTF-8")+"/"+URLEncoder.encode(user,"UTF-8"));
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + obj.toString());
+
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+        return response.toString() ;
+
+
+    }
+
+    public static String dequeue(String user) throws Exception
+    {
+
+        URL obj = new URL(serverURl+"dequeue_user/"+ URLEncoder.encode(user,"UTF-8"));
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + obj.toString());
+
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+        return response.toString() ;
+
+
+    }
+
+    public static String showUserQueue(String user) throws Exception
+    {
+
+        URL obj = new URL(serverURl+"show_user_queue/"+ URLEncoder.encode(user,"UTF-8"));
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + obj.toString());
 
 
         BufferedReader in = new BufferedReader(
