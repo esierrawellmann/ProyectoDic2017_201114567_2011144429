@@ -5,6 +5,10 @@ import com.edd.player.DTO.DTOLogin;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class LoginDialog extends JDialog {
     private JPanel contentPane;
@@ -12,7 +16,7 @@ public class LoginDialog extends JDialog {
     private JButton buttonCancel;
     private JTextField textField1;
     private JTextField textField2;
-
+    private JButton cargarArchivoButton;
 
 
     public DTOLogin getData() {
@@ -65,6 +69,29 @@ public class LoginDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        cargarArchivoButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                int result = fileChooser.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    // user selects a file
+                    File selectedFile = fileChooser.getSelectedFile();
+                    try {
+                        byte[] encoded = Files.readAllBytes(Paths.get(selectedFile.getPath()));
+                        JOptionPane.showMessageDialog(null,HttpHelper.uploadData(encoded));
+                        buttonOK.setEnabled(true);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     private void onOK() {
