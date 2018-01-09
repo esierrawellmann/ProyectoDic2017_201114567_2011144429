@@ -221,6 +221,7 @@ public class Reproductor extends JFrame {
         DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion> modelCanciones =  (DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>)jListEnReproduccion.getModel();
 
         com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album.Cancion)jListCanciones.getSelectedValue();
+
         if(cancion !=null){
 
             modelCanciones.addElement(cancion);
@@ -394,22 +395,24 @@ public class Reproductor extends JFrame {
         int size =  list1.getModel().getSize();
         com.edd.player.DTO.DTOLogin.Data.Year year = (com.edd.player.DTO.DTOLogin.Data.Year) list1.getSelectedValue();
 
-        for(int i = 0 ;i < size;i++){
-            DTOLogin.Data.Year objYear = (DTOLogin.Data.Year) list1.getModel().getElementAt(i);
-            for (DTOLogin.Data.Year.Genere genere : objYear.getGeneros()) {
-                for (DTOLogin.Data.Year.Genere.Artist artista : genere.getArtistas()) {
-                    for (DTOLogin.Data.Year.Genere.Artist.Album album : artista.getAlbums()) {
-                        for (DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion : album.getCanciones()) {
-                            if(cancion.year.equals(year.getYear())){
-                                model.addElement(cancion);
+        if(year !=null){
+            for(int i = 0 ;i < size;i++){
+                DTOLogin.Data.Year objYear = (DTOLogin.Data.Year) list1.getModel().getElementAt(i);
+                for (DTOLogin.Data.Year.Genere genere : objYear.getGeneros()) {
+                    for (DTOLogin.Data.Year.Genere.Artist artista : genere.getArtistas()) {
+                        for (DTOLogin.Data.Year.Genere.Artist.Album album : artista.getAlbums()) {
+                            for (DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion : album.getCanciones()) {
+                                if(cancion.year.equals(year.getYear())){
+                                    model.addElement(cancion);
+                                }
                             }
                         }
                     }
                 }
-            }
 
+            }
+            jListPlaylist.setModel(model);
         }
-        jListPlaylist.setModel(model);
     }
 
     private void button11MouseReleased(MouseEvent e) {
@@ -417,22 +420,26 @@ public class Reproductor extends JFrame {
         DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion> model = new DefaultListModel<>();
 
         com.edd.player.DTO.DTOLogin.Data.Year.Genere selectedGenere = (com.edd.player.DTO.DTOLogin.Data.Year.Genere) jListGeneros.getSelectedValue();
-        int size =  list1.getModel().getSize();
-        for(int i = 0 ;i < size;i++){
-            DTOLogin.Data.Year objYear = (DTOLogin.Data.Year) list1.getModel().getElementAt(i);
-            for (DTOLogin.Data.Year.Genere genere : objYear.getGeneros()) {
-                for (DTOLogin.Data.Year.Genere.Artist artista : genere.getArtistas()) {
-                    for (DTOLogin.Data.Year.Genere.Artist.Album album : artista.getAlbums()) {
-                        for (DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion : album.getCanciones()) {
-                            if(cancion.genere.equals(selectedGenere.genero)){
-                                model.addElement(cancion);
+
+        if(selectedGenere !=null){
+            int size =  list1.getModel().getSize();
+            for(int i = 0 ;i < size;i++){
+                DTOLogin.Data.Year objYear = (DTOLogin.Data.Year) list1.getModel().getElementAt(i);
+                for (DTOLogin.Data.Year.Genere genere : objYear.getGeneros()) {
+                    for (DTOLogin.Data.Year.Genere.Artist artista : genere.getArtistas()) {
+                        for (DTOLogin.Data.Year.Genere.Artist.Album album : artista.getAlbums()) {
+                            for (DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion : album.getCanciones()) {
+                                if(cancion.genere.equals(selectedGenere.genero)){
+                                    model.addElement(cancion);
+                                }
                             }
                         }
                     }
                 }
             }
+            jListPlaylist.setModel(model);
         }
-        jListPlaylist.setModel(model);
+
     }
 
     private void button12MouseReleased(MouseEvent e) {
@@ -441,22 +448,24 @@ public class Reproductor extends JFrame {
 
         com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist selectedArtist = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist) jListArtistas.getSelectedValue();
 
-        int size =  list1.getModel().getSize();
-        for(int i = 0 ;i < size;i++){
-            DTOLogin.Data.Year objYear = (DTOLogin.Data.Year) list1.getModel().getElementAt(i);
-            for (DTOLogin.Data.Year.Genere genere : objYear.getGeneros()) {
-                for (DTOLogin.Data.Year.Genere.Artist artista : genere.getArtistas()) {
-                    for (DTOLogin.Data.Year.Genere.Artist.Album album : artista.getAlbums()) {
-                        for (DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion : album.getCanciones()) {
-                            if(cancion.artist.equals(selectedArtist.artista)){
-                                model.addElement(cancion);
+        if(selectedArtist !=null){
+            int size =  list1.getModel().getSize();
+            for(int i = 0 ;i < size;i++){
+                DTOLogin.Data.Year objYear = (DTOLogin.Data.Year) list1.getModel().getElementAt(i);
+                for (DTOLogin.Data.Year.Genere genere : objYear.getGeneros()) {
+                    for (DTOLogin.Data.Year.Genere.Artist artista : genere.getArtistas()) {
+                        for (DTOLogin.Data.Year.Genere.Artist.Album album : artista.getAlbums()) {
+                            for (DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion : album.getCanciones()) {
+                                if(cancion.artist.equals(selectedArtist.artista)){
+                                    model.addElement(cancion);
+                                }
                             }
                         }
                     }
                 }
             }
+            jListPlaylist.setModel(model);
         }
-        jListPlaylist.setModel(model);
     }
 
     private void button13MouseReleased(MouseEvent e) {
@@ -465,22 +474,25 @@ public class Reproductor extends JFrame {
 
 
         com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album selectedAlbum = (com.edd.player.DTO.DTOLogin.Data.Year.Genere.Artist.Album) jListAlbums.getSelectedValue();
-        int size =  list1.getModel().getSize();
-        for(int i = 0 ;i < size;i++){
-            DTOLogin.Data.Year objYear = (DTOLogin.Data.Year) list1.getModel().getElementAt(i);
-            for (DTOLogin.Data.Year.Genere genere : objYear.getGeneros()) {
-                for (DTOLogin.Data.Year.Genere.Artist artista : genere.getArtistas()) {
-                    for (DTOLogin.Data.Year.Genere.Artist.Album album : artista.getAlbums()) {
-                        for (DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion : album.getCanciones()) {
-                            if(cancion.album.equals(selectedAlbum.nombre)){
-                                model.addElement(cancion);
+
+        if(selectedAlbum !=null){
+            int size =  list1.getModel().getSize();
+            for(int i = 0 ;i < size;i++){
+                DTOLogin.Data.Year objYear = (DTOLogin.Data.Year) list1.getModel().getElementAt(i);
+                for (DTOLogin.Data.Year.Genere genere : objYear.getGeneros()) {
+                    for (DTOLogin.Data.Year.Genere.Artist artista : genere.getArtistas()) {
+                        for (DTOLogin.Data.Year.Genere.Artist.Album album : artista.getAlbums()) {
+                            for (DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion : album.getCanciones()) {
+                                if(cancion.album.equals(selectedAlbum.nombre)){
+                                    model.addElement(cancion);
+                                }
                             }
                         }
                     }
                 }
             }
+            jListPlaylist.setModel(model);
         }
-        jListPlaylist.setModel(model);
     }
 
     private void button15MouseReleased(MouseEvent e) {
@@ -549,7 +561,7 @@ public class Reproductor extends JFrame {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        // Generated using JFormDesigner Evaluation license - Erik Sierra
+        // Generated using JFormDesigner Evaluation license - Renan Luna
         panel1 = new JPanel();
         lblCaratula = new JLabel();
         panel2 = new JPanel();
@@ -643,7 +655,7 @@ public class Reproductor extends JFrame {
             btnPlay_Pause.setBackground(new Color(37, 38, 38));
             btnPlay_Pause.addActionListener(e -> {
 			btnPlay_PauseActionPerformed(e);
-			btnPlay_PauseActionPerformed(e);
+
 		});
             panel2.add(btnPlay_Pause);
             btnPlay_Pause.setBounds(495, 10, 45, 45);
@@ -963,8 +975,6 @@ public class Reproductor extends JFrame {
             @Override
             public void mouseReleased(MouseEvent e) {
                 btnSuffleMouseReleased(e);
-                btnSuffleMouseReleased(e);
-                btnSuffleMouseReleased(e);
             }
         });
         contentPane.add(btnSuffle);
@@ -1034,7 +1044,7 @@ public class Reproductor extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - Erik Sierra
+    // Generated using JFormDesigner Evaluation license - Renan Luna
     private JPanel panel1;
     private JLabel lblCaratula;
     private JPanel panel2;
