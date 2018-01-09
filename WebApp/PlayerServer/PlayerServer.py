@@ -239,6 +239,62 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route("/xml_client", methods=['POST'])
+def xml_client():
+    data = request.get_data()
+    str = data.decode("utf-8")
+
+    e = xml.etree.ElementTree.fromstring(str)
+    for child in e.findall('usuarios'):
+        for usuario in child:
+            usr = Usuario()
+            usr.cola = Lista()
+            usr.username = usuario.find("nombre").text
+            usr.password = usuario.find("pass").text
+            users.add(usr)
+
+    for artistas in e.findall('artistas'):
+        for artista in artistas:
+
+            for albums in artista.findall('albumes'):
+                for album in albums:
+                    node_album = Album()
+                    node_album.año = album.find("annioo").text
+                    node_album.genero = album.find("genero").text
+                    node_album.nombre = album.find("nombre").text
+                    node_album.canciones = Lista()
+                    year_data = songs_directory.add_year(node_album.año).data
+                    genere = songs_directory.add_genere(year_data, node_album.genero).data
+                    node_artist = Artista()
+                    node_artist.nombre = artista.find("nombre").text
+                    node_artist.b_year = year_data.year
+                    node_artist.b_genere = genere.genere
+                    artist_b_genere = genere.arbol.search(node_artist)
+                    if artist_b_genere is None:
+                        node_artist.albums = None
+                        artist_b_genere = genere.arbol.insert(node_artist)
+                    if artist_b_genere.albums is None:
+                        artist_b_genere.albums = ABB()
+
+                    for canciones in album.findall('canciones'):
+                        for cancion in canciones:
+                            node_cancion = Cancion()
+                            node_cancion.nombre = cancion.find("nombre").text
+                            node_cancion.path = cancion.find("path").text
+                            node_cancion.artist = node_artist.nombre
+                            node_cancion.year = node_album.año
+                            node_cancion.genere = node_album.genero
+                            node_cancion.album = node_album.nombre
+                            node_album.canciones.add(node_cancion)
+                    artist_b_genere.albums.raiz = artist_b_genere.albums.insert(artist_b_genere.albums.raiz, node_album)
+
+                    artist_albums.add(node_album)
+            artists.add(artist_albums)
+    g.songs_directory = songs_directory
+
+    #e =
+    return ""
+
 @app.route('/upload-file', methods=['POST'])
 def upload_file():
     if request.method == 'POST':
