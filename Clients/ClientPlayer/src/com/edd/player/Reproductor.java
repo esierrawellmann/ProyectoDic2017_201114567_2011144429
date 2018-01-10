@@ -133,6 +133,11 @@ public class Reproductor extends JFrame {
         {
 
             ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).remove(0);
+            try {
+                HttpHelper.dequeue(user);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
         }
 
     }
@@ -814,7 +819,6 @@ public class Reproductor extends JFrame {
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     button5MouseReleased(e);
-                    button5MouseReleased(e);
                 }
             });
             panel3.add(button5);
@@ -825,7 +829,6 @@ public class Reproductor extends JFrame {
             button6.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    button6MouseReleased(e);
                     button6MouseReleased(e);
                 }
             });
@@ -915,7 +918,6 @@ public class Reproductor extends JFrame {
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     button14MouseReleased(e);
-                    button14MouseReleased(e);
                 }
             });
             panel3.add(button14);
@@ -939,8 +941,6 @@ public class Reproductor extends JFrame {
             button16.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    button16MouseReleased(e);
-                    button16MouseReleased(e);
                     button16MouseReleased(e);
                 }
             });
@@ -967,8 +967,6 @@ public class Reproductor extends JFrame {
         //---- btnSuffle ----
         btnSuffle.setText("Encolar");
         btnSuffle.addActionListener(e -> {
-			btnSuffleActionPerformed(e);
-			btnSuffleActionPerformed(e);
 			btnSuffleActionPerformed(e);
 		});
         btnSuffle.addMouseListener(new MouseAdapter() {
