@@ -568,7 +568,9 @@ public class Reproductor extends JFrame {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - Renan Luna
         panel1 = new JPanel();
+        label1 = new JLabel();
         lblCaratula = new JLabel();
+        lblFondo = new JLabel();
         panel2 = new JPanel();
         btnPlay_Pause = new JButton();
         btnNext = new JButton();
@@ -613,8 +615,10 @@ public class Reproductor extends JFrame {
         button2 = new JButton();
         button3 = new JButton();
         button4 = new JButton();
+        panel4 = new JPanel();
 
         //======== this ========
+        setBackground(new Color(51, 51, 51));
         Container contentPane = getContentPane();
         contentPane.setLayout(null);
 
@@ -630,8 +634,21 @@ public class Reproductor extends JFrame {
                     java.awt.Color.red), panel1.getBorder())); panel1.addPropertyChangeListener(new java.beans.PropertyChangeListener(){public void propertyChange(java.beans.PropertyChangeEvent e){if("border".equals(e.getPropertyName()))throw new RuntimeException();}});
 
             panel1.setLayout(null);
+
+            //---- label1 ----
+            label1.setIcon(new ImageIcon(getClass().getResource("/com/edd/player/Imagenes/SpotifyLogo.png")));
+            panel1.add(label1);
+            label1.setBounds(55, 40, 85, 35);
+
+            //---- lblCaratula ----
+            lblCaratula.setIcon(new ImageIcon(getClass().getResource("/com/edd/player/Imagenes/logo.png")));
             panel1.add(lblCaratula);
             lblCaratula.setBounds(0, 400, 205, 195);
+
+            //---- lblFondo ----
+            lblFondo.setIcon(new ImageIcon(getClass().getResource("/com/edd/player/Imagenes/ezgif.com-video-to-gif.gif")));
+            panel1.add(lblFondo);
+            lblFondo.setBounds(0, -5, 205, 405);
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
@@ -658,6 +675,7 @@ public class Reproductor extends JFrame {
             //---- btnPlay_Pause ----
             btnPlay_Pause.setOpaque(false);
             btnPlay_Pause.setBackground(new Color(37, 38, 38));
+            btnPlay_Pause.setIcon(new ImageIcon(getClass().getResource("/com/edd/player/Imagenes/play.png")));
             btnPlay_Pause.addActionListener(e -> {
 			btnPlay_PauseActionPerformed(e);
 
@@ -669,6 +687,7 @@ public class Reproductor extends JFrame {
             btnNext.setDefaultCapable(false);
             btnNext.setOpaque(false);
             btnNext.setBackground(new Color(37, 38, 38));
+            btnNext.setIcon(new ImageIcon(getClass().getResource("/com/edd/player/Imagenes/next.png")));
             btnNext.addActionListener(e -> btnNextActionPerformed(e));
             panel2.add(btnNext);
             btnNext.setBounds(555, 10, 45, 45);
@@ -676,6 +695,7 @@ public class Reproductor extends JFrame {
             //---- btnPrevious ----
             btnPrevious.setOpaque(false);
             btnPrevious.setBackground(new Color(37, 38, 38));
+            btnPrevious.setIcon(new ImageIcon(getClass().getResource("/com/edd/player/Imagenes/stop.png")));
             btnPrevious.addActionListener(e -> btnPreviousActionPerformed(e));
             panel2.add(btnPrevious);
             btnPrevious.setBounds(435, 10, 45, 45);
@@ -725,6 +745,7 @@ public class Reproductor extends JFrame {
 
         //======== panel3 ========
         {
+            panel3.setBackground(new Color(51, 51, 51));
             panel3.setLayout(null);
 
             //======== scrollPane1 ========
@@ -815,6 +836,9 @@ public class Reproductor extends JFrame {
 
             //---- button5 ----
             button5.setText("Eliminar Genero");
+            button5.setBackground(new Color(33, 33, 33));
+            button5.setForeground(Color.white);
+            button5.setFont(new Font("Century Gothic", Font.PLAIN, 14));
             button5.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
@@ -826,6 +850,9 @@ public class Reproductor extends JFrame {
 
             //---- button6 ----
             button6.setText("Eliminar Artista");
+            button6.setBackground(new Color(33, 33, 33));
+            button6.setForeground(Color.white);
+            button6.setFont(new Font("Century Gothic", Font.PLAIN, 14));
             button6.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
@@ -837,6 +864,9 @@ public class Reproductor extends JFrame {
 
             //---- button7 ----
             button7.setText("Usuarios");
+            button7.setBackground(new Color(33, 33, 33));
+            button7.setForeground(Color.white);
+            button7.setFont(new Font("Century Gothic", Font.PLAIN, 12));
             button7.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
@@ -848,6 +878,9 @@ public class Reproductor extends JFrame {
 
             //---- button9 ----
             button9.setText("Eliminar Usuario");
+            button9.setBackground(new Color(33, 33, 33));
+            button9.setForeground(Color.white);
+            button9.setFont(new Font("Century Gothic", Font.PLAIN, 12));
             button9.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
@@ -859,6 +892,9 @@ public class Reproductor extends JFrame {
 
             //---- button8 ----
             button8.setText("Eliminar Cancion");
+            button8.setBackground(new Color(33, 33, 33));
+            button8.setForeground(Color.white);
+            button8.setFont(new Font("Century Gothic", Font.PLAIN, 14));
             button8.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
@@ -870,6 +906,9 @@ public class Reproductor extends JFrame {
 
             //---- button10 ----
             button10.setText("A\u00f1o");
+            button10.setBackground(new Color(33, 33, 33));
+            button10.setForeground(Color.white);
+            button10.setFont(new Font("Century Gothic", Font.PLAIN, 12));
             button10.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
@@ -881,6 +920,9 @@ public class Reproductor extends JFrame {
 
             //---- button11 ----
             button11.setText("Genero");
+            button11.setBackground(new Color(33, 33, 33));
+            button11.setForeground(Color.white);
+            button11.setFont(new Font("Century Gothic", Font.PLAIN, 12));
             button11.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
@@ -892,6 +934,9 @@ public class Reproductor extends JFrame {
 
             //---- button12 ----
             button12.setText("Artista");
+            button12.setBackground(new Color(33, 33, 33));
+            button12.setForeground(Color.white);
+            button12.setFont(new Font("Century Gothic", Font.PLAIN, 12));
             button12.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
@@ -903,6 +948,9 @@ public class Reproductor extends JFrame {
 
             //---- button13 ----
             button13.setText("Disco");
+            button13.setBackground(new Color(33, 33, 33));
+            button13.setForeground(Color.white);
+            button13.setFont(new Font("Century Gothic", Font.PLAIN, 12));
             button13.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
@@ -914,6 +962,9 @@ public class Reproductor extends JFrame {
 
             //---- button14 ----
             button14.setText(">>");
+            button14.setBackground(new Color(33, 33, 33));
+            button14.setFont(new Font("Century Gothic", Font.PLAIN, 14));
+            button14.setForeground(Color.white);
             button14.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
@@ -925,6 +976,9 @@ public class Reproductor extends JFrame {
 
             //---- button15 ----
             button15.setText("Agregar A Lista");
+            button15.setBackground(new Color(33, 33, 33));
+            button15.setForeground(Color.white);
+            button15.setFont(new Font("Century Gothic", Font.PLAIN, 14));
             button15.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
@@ -933,11 +987,19 @@ public class Reproductor extends JFrame {
             });
             panel3.add(button15);
             button15.setBounds(430, 260, 163, button15.getPreferredSize().height);
+
+            //---- textField1 ----
+            textField1.setBackground(new Color(117, 117, 117));
+            textField1.setForeground(Color.black);
+            textField1.setFont(new Font("Century Gothic", Font.PLAIN, 12));
             panel3.add(textField1);
             textField1.setBounds(600, 265, 190, textField1.getPreferredSize().height);
 
             //---- button16 ----
             button16.setText("Graph");
+            button16.setForeground(Color.white);
+            button16.setFont(new Font("Century Gothic", Font.PLAIN, 12));
+            button16.setBackground(new Color(33, 33, 33));
             button16.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
@@ -966,6 +1028,9 @@ public class Reproductor extends JFrame {
 
         //---- btnSuffle ----
         btnSuffle.setText("Encolar");
+        btnSuffle.setBackground(new Color(33, 33, 33));
+        btnSuffle.setForeground(Color.white);
+        btnSuffle.setFont(new Font("Century Gothic", Font.PLAIN, 12));
         btnSuffle.addActionListener(e -> {
 			btnSuffleActionPerformed(e);
 		});
@@ -980,6 +1045,9 @@ public class Reproductor extends JFrame {
 
         //---- button1 ----
         button1.setText("Ver Matriz");
+        button1.setBackground(new Color(33, 33, 33));
+        button1.setForeground(Color.white);
+        button1.setFont(new Font("Century Gothic", Font.PLAIN, 14));
         button1.addActionListener(e -> button1ActionPerformed(e));
         button1.addMouseListener(new MouseAdapter() {
             @Override
@@ -992,6 +1060,9 @@ public class Reproductor extends JFrame {
 
         //---- button2 ----
         button2.setText("Arbol B");
+        button2.setBackground(new Color(33, 33, 33));
+        button2.setForeground(Color.white);
+        button2.setFont(new Font("Century Gothic", Font.PLAIN, 14));
         button2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -1003,6 +1074,9 @@ public class Reproductor extends JFrame {
 
         //---- button3 ----
         button3.setText("ABB");
+        button3.setBackground(new Color(33, 33, 33));
+        button3.setForeground(Color.white);
+        button3.setFont(new Font("Century Gothic", Font.PLAIN, 14));
         button3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -1014,6 +1088,9 @@ public class Reproductor extends JFrame {
 
         //---- button4 ----
         button4.setText("Canciones");
+        button4.setBackground(new Color(33, 33, 33));
+        button4.setForeground(Color.white);
+        button4.setFont(new Font("Century Gothic", Font.PLAIN, 14));
         button4.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -1022,6 +1099,28 @@ public class Reproductor extends JFrame {
         });
         contentPane.add(button4);
         button4.setBounds(780, 10, 130, 25);
+
+        //======== panel4 ========
+        {
+            panel4.setBackground(new Color(51, 51, 51));
+            panel4.setLayout(null);
+
+            { // compute preferred size
+                Dimension preferredSize = new Dimension();
+                for(int i = 0; i < panel4.getComponentCount(); i++) {
+                    Rectangle bounds = panel4.getComponent(i).getBounds();
+                    preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                    preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+                }
+                Insets insets = panel4.getInsets();
+                preferredSize.width += insets.right;
+                preferredSize.height += insets.bottom;
+                panel4.setMinimumSize(preferredSize);
+                panel4.setPreferredSize(preferredSize);
+            }
+        }
+        contentPane.add(panel4);
+        panel4.setBounds(210, 0, 795, 50);
 
         { // compute preferred size
             Dimension preferredSize = new Dimension();
@@ -1044,7 +1143,9 @@ public class Reproductor extends JFrame {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     // Generated using JFormDesigner Evaluation license - Renan Luna
     private JPanel panel1;
+    private JLabel label1;
     private JLabel lblCaratula;
+    private JLabel lblFondo;
     private JPanel panel2;
     private JButton btnPlay_Pause;
     private JButton btnNext;
@@ -1089,5 +1190,6 @@ public class Reproductor extends JFrame {
     private JButton button2;
     private JButton button3;
     private JButton button4;
+    private JPanel panel4;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
