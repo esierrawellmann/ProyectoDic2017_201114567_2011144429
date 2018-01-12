@@ -1,15 +1,21 @@
 package com.edd.player;
 
+import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 
+import static java.awt.Desktop.getDesktop;
+
 public class Graphviz {
 
-    String path = "/home/erik/cancionesEDD/";
-    String path_grafo = "/home/erik/cancionesEDD/";
+    /*String path = "/home/erik/cancionesEDD/";
+    String path_grafo = "/home/erik/cancionesEDD/";*/
+
+    String path = "C:\\cancionesEDD\\";
+    String path_grafo = "C:\\cancionesEDD\\";
 
 
     public void CrearGrafo(String Grafo)
@@ -47,10 +53,14 @@ public class Graphviz {
 
             rt.exec( cmd ).waitFor();
 
-            String[] cmd2 = new String[2];
-            cmd2[0] = "eog";
-            cmd2[1] = fileOutputPath;
-            rt.exec(cmd2);
+            File imagen =new File(fileOutputPath);
+            Desktop d = getDesktop();
+            d.open(imagen);
+
+
+            /*String[] cmd2 = new String[1];
+            cmd2[0] = fileOutputPath;
+            rt.exec(cmd2);*/
 
         } catch (Exception ex) {
             ex.printStackTrace();

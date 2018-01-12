@@ -30,7 +30,6 @@ new FormModel {
 					"opaque": false
 					"background": new java.awt.Color( 37, 38, 38, 255 )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnPlay_PauseActionPerformed", true ) )
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnPlay_PauseActionPerformed", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 495
 					"y": 10
@@ -119,6 +118,14 @@ new FormModel {
 					"height": 16
 					"x": 640
 					"y": 75
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "button18"
+					"text": "Shuffle"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button18MouseReleased", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 620
+					"y": 20
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": -5
@@ -232,7 +239,6 @@ new FormModel {
 					name: "button5"
 					"text": "Eliminar Genero"
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button5MouseReleased", true ) )
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button5MouseReleased", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 5
 					"y": 0
@@ -242,7 +248,6 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "button6"
 					"text": "Eliminar Artista"
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button6MouseReleased", true ) )
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button6MouseReleased", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 190
@@ -319,7 +324,6 @@ new FormModel {
 					name: "button14"
 					"text": ">>"
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button14MouseReleased", true ) )
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button14MouseReleased", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 365
 					"y": 405
@@ -344,12 +348,26 @@ new FormModel {
 					name: "button16"
 					"text": "Graph"
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button16MouseReleased", true ) )
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button16MouseReleased", true ) )
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button16MouseReleased", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 355
 					"y": 455
 					"width": 75
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "button17"
+					"text": "Todas"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button17MouseReleased", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 360
+					"y": 260
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "button19"
+					"text": "Clear"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "button19MouseReleased", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+					"x": 360
+					"y": 360
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 210
@@ -360,10 +378,6 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "btnSuffle"
 				"text": "Encolar"
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnSuffleActionPerformed", true ) )
-				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "btnSuffleMouseReleased", true ) )
-				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "btnSuffleMouseReleased", true ) )
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnSuffleActionPerformed", true ) )
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnSuffleActionPerformed", true ) )
 				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "btnSuffleMouseReleased", true ) )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {

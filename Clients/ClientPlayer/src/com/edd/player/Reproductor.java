@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -564,6 +565,88 @@ public class Reproductor extends JFrame {
 
     }
 
+    private void button17MouseReleased(MouseEvent e) {
+        // TODO add your code here
+        DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion> model = new DefaultListModel<>();
+        int size = list1.getModel().getSize();
+        com.edd.player.DTO.DTOLogin.Data.Year year = (com.edd.player.DTO.DTOLogin.Data.Year) list1.getSelectedValue();
+
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                DTOLogin.Data.Year objYear = (DTOLogin.Data.Year) list1.getModel().getElementAt(i);
+                for (DTOLogin.Data.Year.Genere genere : objYear.getGeneros()) {
+                    for (DTOLogin.Data.Year.Genere.Artist artista : genere.getArtistas()) {
+                        for (DTOLogin.Data.Year.Genere.Artist.Album album : artista.getAlbums()) {
+                            for (DTOLogin.Data.Year.Genere.Artist.Album.Cancion cancion : album.getCanciones()) {
+
+                                model.addElement(cancion);
+
+                            }
+                        }
+                    }
+                }
+
+            }
+            jListPlaylist.setModel(model);
+        }
+    }
+
+    private void button18MouseReleased(MouseEvent e) {
+        // TODO add your code here
+
+        String ruta_cancion = "";
+        Random rnd = new Random();
+
+
+        if (jListEnReproduccion.getModel().getSize() >=1) {
+
+            //ruta_cancion = ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).elementAt(index_lista).ruta;
+
+            ruta_cancion = ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).getElementAt(rnd.nextInt(jListEnReproduccion.getModel().getSize()-1)).ruta;
+            /*long index = ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).firstElement().getIndex();
+            ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).remove((int)index);*/
+
+            file = new File(ruta_cancion);
+
+            if (file.exists() && !file.isDirectory())
+            {
+                try {
+                    AudioInputStream in = AudioSystem.getAudioInputStream(file);
+                    mi_reproductor.control.open(in);
+                    mi_reproductor.control.play();
+                } catch (BasicPlayerException ex) {
+                    Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnsupportedAudioFileException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            else
+            {
+                System.out.println("el archivo no existe");
+            }
+        }
+    }
+
+    private void button19MouseReleased(MouseEvent e) {
+        // TODO add your code here
+        int tamano=jListEnReproduccion.getModel().getSize();
+
+        for(int i =0;i<tamano;i++){
+
+            ((DefaultListModel<DTOLogin.Data.Year.Genere.Artist.Album.Cancion>) jListEnReproduccion.getModel()).remove(0);
+            try {
+                HttpHelper.dequeue(user);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        }
+
+
+
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - Renan Luna
@@ -582,6 +665,7 @@ public class Reproductor extends JFrame {
         lblArtista = new JLabel();
         jLabelTranscurrido = new JLabel();
         jLabelTiempo = new JLabel();
+        button18 = new JButton();
         panel3 = new JPanel();
         scrollPane1 = new JScrollPane();
         list1 = new JList();
@@ -610,6 +694,8 @@ public class Reproductor extends JFrame {
         button15 = new JButton();
         textField1 = new JTextField();
         button16 = new JButton();
+        button17 = new JButton();
+        button19 = new JButton();
         btnSuffle = new JButton();
         button1 = new JButton();
         button2 = new JButton();
@@ -678,7 +764,7 @@ public class Reproductor extends JFrame {
             btnPlay_Pause.setIcon(new ImageIcon(getClass().getResource("/com/edd/player/Imagenes/play.png")));
             btnPlay_Pause.addActionListener(e -> {
 			btnPlay_PauseActionPerformed(e);
-
+			btnPlay_PauseActionPerformed(e);
 		});
             panel2.add(btnPlay_Pause);
             btnPlay_Pause.setBounds(495, 10, 45, 45);
@@ -725,6 +811,17 @@ public class Reproductor extends JFrame {
             jLabelTranscurrido.setBounds(360, 70, 40, 15);
             panel2.add(jLabelTiempo);
             jLabelTiempo.setBounds(640, 75, 40, 16);
+
+            //---- button18 ----
+            button18.setText("Shuffle");
+            button18.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    button18MouseReleased(e);
+                }
+            });
+            panel2.add(button18);
+            button18.setBounds(new Rectangle(new Point(620, 20), button18.getPreferredSize()));
 
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
@@ -1009,6 +1106,28 @@ public class Reproductor extends JFrame {
             panel3.add(button16);
             button16.setBounds(355, 455, 75, button16.getPreferredSize().height);
 
+            //---- button17 ----
+            button17.setText("Todas");
+            button17.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    button17MouseReleased(e);
+                }
+            });
+            panel3.add(button17);
+            button17.setBounds(new Rectangle(new Point(360, 260), button17.getPreferredSize()));
+
+            //---- button19 ----
+            button19.setText("Clear");
+            button19.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    button19MouseReleased(e);
+                }
+            });
+            panel3.add(button19);
+            button19.setBounds(new Rectangle(new Point(360, 360), button19.getPreferredSize()));
+
             { // compute preferred size
                 Dimension preferredSize = new Dimension();
                 for(int i = 0; i < panel3.getComponentCount(); i++) {
@@ -1157,6 +1276,7 @@ public class Reproductor extends JFrame {
     private JLabel lblArtista;
     private JLabel jLabelTranscurrido;
     private JLabel jLabelTiempo;
+    private JButton button18;
     private JPanel panel3;
     private JScrollPane scrollPane1;
     private JList list1;
@@ -1185,6 +1305,8 @@ public class Reproductor extends JFrame {
     private JButton button15;
     private JTextField textField1;
     private JButton button16;
+    private JButton button17;
+    private JButton button19;
     private JButton btnSuffle;
     private JButton button1;
     private JButton button2;
